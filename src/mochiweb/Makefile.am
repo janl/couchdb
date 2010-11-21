@@ -98,7 +98,7 @@ CLEANFILES = \
 	cp $< $@
 
 mochijson2.beam: mochijson2.erl
-	$(ERLC) +native mochijson2.erl
+	$(ERLC) +native $<
 
 %.beam: %.erl
 	$(ERLC) $(ERLC_FLAGS) $<
