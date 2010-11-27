@@ -96,10 +96,15 @@ var Couch = {
   },
   recursivelySeal : function(obj) {
     // seal() is broken in current Spidermonkey
-    seal(obj);
+    try {
+      seal(obj);
+    } catch (x) {
+      // Sealing of arrays broken in some SpiderMonkey versions.
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=449657
+    }
     for (var propname in obj) {
-      if (typeof doc[propname] == "object") {
-        recursivelySeal(doc[propname]);
+      if (typeof obj[propname] == "object") {
+        arguments.callee(obj[propname]);
       }
     }
   }
@@ -124,3 +129,7 @@ function log(message) {
   }
   respond(["log", String(message)]);
 };
+
+function isArray(obj) {
+  return toString.call(obj) === "[object Array]";
+}
