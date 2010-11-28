@@ -766,7 +766,7 @@ tokenize_charref(Bin, S=#decoder{offset=O}, Start) ->
                            <<_:Start1/binary, R:Len1/binary, _/binary>> = Bin,
                            R;
                        Unichar ->
-                           list_to_binary(xmerl_ucs:to_utf8(Unichar))
+                           list_to_binary(couch_util:to_utf8(Unichar))
                    end,
             {{data, Data, false}, ?INC_COL(S)};
         _ ->

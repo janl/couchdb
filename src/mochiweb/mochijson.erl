@@ -160,9 +160,9 @@ json_encode_proplist(Props, State) ->
     lists:reverse([$\} | Acc1]).
 
 json_encode_string(A, _State) when is_atom(A) ->
-    json_encode_string_unicode(xmerl_ucs:from_utf8(atom_to_list(A)));
+    json_encode_string_unicode(couch_util:from_utf8(atom_to_list(A)));
 json_encode_string(B, _State) when is_binary(B) ->
-    json_encode_string_unicode(xmerl_ucs:from_utf8(B));
+    json_encode_string_unicode(couch_util:from_utf8(B));
 json_encode_string(S, #encoder{input_encoding=utf8}) ->
     json_encode_string_utf8(S);
 json_encode_string(S, #encoder{input_encoding=unicode}) ->
@@ -186,7 +186,7 @@ json_encode_string_utf8_1([C | Cs]) when C >= 0, C =< 16#7f ->
            end,
     [NewC | json_encode_string_utf8_1(Cs)];
 json_encode_string_utf8_1(All=[C | _]) when C >= 16#80, C =< 16#10FFFF ->
-    [?Q | Rest] = json_encode_string_unicode(xmerl_ucs:from_utf8(All)),
+    [?Q | Rest] = json_encode_string_unicode(couch_util:from_utf8(All)),
     Rest;
 json_encode_string_utf8_1([]) ->
     "\"".
@@ -297,7 +297,7 @@ decode_array(L, S=#decoder{state=comma}, Acc) ->
 
 tokenize_string(IoList=[C | _], S=#decoder{input_encoding=utf8}, Acc)
   when is_list(C); is_binary(C); C >= 16#7f ->
-    List = xmerl_ucs:from_utf8(iolist_to_binary(IoList)),
+    List = couch_util:from_utf8(iolist_to_binary(IoList)),
     tokenize_string(List, S#decoder{input_encoding=unicode}, Acc);
 tokenize_string("\"" ++ Rest, S, Acc) ->
     {lists:reverse(Acc), Rest, ?INC_COL(S)};
@@ -329,7 +329,7 @@ tokenize_string([C | Rest], S, Acc) when C >= $\s; C < 16#10FFFF ->
 
 tokenize_number(IoList=[C | _], Mode, S=#decoder{input_encoding=utf8}, Acc)
   when is_list(C); is_binary(C); C >= 16#7f ->
-    List = xmerl_ucs:from_utf8(iolist_to_binary(IoList)),
+    List = couch_util:from_utf8(iolist_to_binary(IoList)),
     tokenize_number(List, Mode, S#decoder{input_encoding=unicode}, Acc);
 tokenize_number([$- | Rest], sign, S, []) ->
     tokenize_number(Rest, int, ?INC_COL(S), [$-]);
@@ -371,7 +371,7 @@ tokenize([], S=#decoder{state=trim}) ->
 tokenize([L | Rest], S) when is_list(L) ->
     tokenize(L ++ Rest, S);
 tokenize([B | Rest], S) when is_binary(B) ->
-    tokenize(xmerl_ucs:from_utf8(B) ++ Rest, S);
+    tokenize(couch_util:from_utf8(B) ++ Rest, S);
 tokenize("\r\n" ++ Rest, S) ->
     tokenize(Rest, ?INC_LINE(S));
 tokenize("\n" ++ Rest, S) ->

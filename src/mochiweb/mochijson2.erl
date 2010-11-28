@@ -139,14 +139,14 @@ json_encode_string(A, State) when is_atom(A) ->
         true ->
             [?Q, L, ?Q];
         false ->
-            json_encode_string_unicode(xmerl_ucs:from_utf8(L), State, [?Q])
+            json_encode_string_unicode(couch_util:from_utf8(L), State, [?Q])
     end;
 json_encode_string(B, State) when is_binary(B) ->
     case json_bin_is_safe(B) of
         true ->
             [?Q, B, ?Q];
         false ->
-            json_encode_string_unicode(xmerl_ucs:from_utf8(B), State, [?Q])
+            json_encode_string_unicode(couch_util:from_utf8(B), State, [?Q])
     end;
 json_encode_string(I, _State) when is_integer(I) ->
     [?Q, integer_to_list(I), ?Q];
@@ -241,7 +241,7 @@ json_encode_string_unicode([C | Cs], State, Acc) ->
                C when C >= 0, C < $\s ->
                    [unihex(C) | Acc];
                C when C >= 16#7f, C =< 16#10FFFF, State#encoder.utf8 ->
-                   [xmerl_ucs:to_utf8(C) | Acc];
+                   [couch_util:to_utf8(C) | Acc];
                C when  C >= 16#7f, C =< 16#10FFFF, not State#encoder.utf8 ->
                    [unihex(C) | Acc];
                C when C < 16#7f ->
@@ -399,10 +399,10 @@ tokenize_string(B, S=#decoder{offset=O}, Acc) ->
                 D = erlang:list_to_integer([D3,D2,D1,D0], 16),
                 [CodePoint] = xmerl_ucs:from_utf16be(<<C:16/big-unsigned-integer,
                     D:16/big-unsigned-integer>>),
-                Acc1 = lists:reverse(xmerl_ucs:to_utf8(CodePoint), Acc),
+                Acc1 = lists:reverse(couch_util:to_utf8(CodePoint), Acc),
                 tokenize_string(B, ?ADV_COL(S, 12), Acc1);
             true ->
-                Acc1 = lists:reverse(xmerl_ucs:to_utf8(C), Acc),
+                Acc1 = lists:reverse(couch_util:to_utf8(C), Acc),
                 tokenize_string(B, ?ADV_COL(S, 6), Acc1)
             end;
         <<_:O/binary, C, _/binary>> ->
@@ -641,7 +641,7 @@ test_input_validation() ->
         {16#10196, <<?Q, 16#F0, 16#90, 16#86, 16#96, ?Q>>} % denarius
     ],
     lists:foreach(fun({CodePoint, UTF8}) ->
-        Expect = list_to_binary(xmerl_ucs:to_utf8(CodePoint)),
+        Expect = list_to_binary(couch_util:to_utf8(CodePoint)),
         Expect = decode(UTF8)
     end, Good),
 

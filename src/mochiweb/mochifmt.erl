@@ -301,7 +301,7 @@ convert2(Arg, #conversion{ctype=hex}) ->
 convert2(Arg, #conversion{ctype=char}) when Arg < 16#80 ->
     [Arg];
 convert2(Arg, #conversion{ctype=char}) ->
-    xmerl_ucs:to_utf8(Arg);
+    couch_util:to_utf8(Arg);
 convert2(Arg, #conversion{ctype=decimal}) ->
     integer_to_list(Arg);
 convert2(Arg, #conversion{ctype=general, precision=undefined}) ->
