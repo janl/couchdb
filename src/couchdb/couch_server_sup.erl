@@ -96,7 +96,13 @@ start_server(IniFiles) ->
             permanent,
             infinity,
             supervisor,
-            [couch_server_sup]}
+            [couch_server_sup]},
+        {vp_sup,
+            {vp_sup, start_link, []},
+            permanent,
+            infinity,
+            supervisor,
+            [vp_sup]}
         ]},
 
     % ensure these applications are running
