@@ -18,7 +18,7 @@
 -export([update_doc/3,update_doc/4,update_docs/4,update_docs/2,update_docs/3,delete_doc/3]).
 -export([get_doc_info/2,open_doc/2,open_doc/3,open_doc_revs/4]).
 -export([set_revs_limit/2,get_revs_limit/1]).
--export([get_missing_revs/2,name/1,doc_to_tree/1,get_update_seq/1,get_committed_update_seq/1]).
+-export([get_missing_revs/2,name/1,get_update_seq/1,get_committed_update_seq/1]).
 -export([enum_docs/4,enum_docs_since/5]).
 -export([enum_docs_since_reduce_to_count/1,enum_docs_reduce_to_count/1]).
 -export([increment_update_seq/1,get_purge_seq/1,purge_docs/2,get_last_purged/1]).
@@ -223,7 +223,7 @@ get_full_doc_info(Db, Id) ->
     Result.
 
 get_full_doc_infos(Db, Ids) ->
-    couch_btree:lookup(Db#db.fulldocinfo_by_id_btree, Ids).
+    couch_btree:lookup(by_id_btree(Db), Ids).
 
 increment_update_seq(#db{update_pid=UpdatePid}) ->
     gen_server:call(UpdatePid, increment_update_seq).
@@ -251,11 +251,10 @@ get_db_info(Db) ->
         compactor_pid=Compactor,
         update_seq=SeqNum,
         name=Name,
-        fulldocinfo_by_id_btree=FullDocBtree,
         instance_start_time=StartTime,
         committed_update_seq=CommittedUpdateSeq} = Db,
     {ok, Size} = couch_file:bytes(Fd),
-    {ok, {Count, DelCount}} = couch_btree:full_reduce(FullDocBtree),
+    {ok, {Count, DelCount}} = couch_btree:full_reduce(by_id_btree(Db)),
     InfoList = [
         {db_name, Name},
         {doc_count, Count},
@@ -270,8 +269,8 @@ get_db_info(Db) ->
         ],
     {ok, InfoList}.
 
-get_design_docs(#db{fulldocinfo_by_id_btree=Btree}=Db) ->
-    {ok,_, Docs} = couch_btree:fold(Btree,
+get_design_docs(Db) ->
+    {ok,_, Docs} = couch_btree:fold(by_id_btree(Db),
         fun(#full_doc_info{id= <<"_design/",_/binary>>}=FullDocInfo, _Reds, AccDocs) ->
             {ok, Doc} = couch_db:open_doc_int(Db, FullDocInfo, []),
             {ok, [Doc | AccDocs]};
@@ -559,7 +558,7 @@ prep_and_validate_replicated_updates(Db, [Bucket|RestBuckets], [OldInfo|RestOldI
     {ok, #full_doc_info{rev_tree=OldTree}} ->
         NewRevTree = lists:foldl(
             fun(NewDoc, AccTree) ->
-                {NewTree, _} = couch_key_tree:merge(AccTree, [couch_db:doc_to_tree(NewDoc)]),
+                {NewTree, _} = couch_key_tree:merge(AccTree, couch_doc:to_path(NewDoc)),
                 NewTree
             end,
             OldTree, Bucket),
@@ -662,7 +661,7 @@ update_docs(Db, Docs, Options, replicated_changes) ->
         DocErrors = [],
         DocBuckets3 = DocBuckets
     end,
-    DocBuckets4 = [[doc_flush_atts(check_dup_atts(Doc), Db#db.fd)
+    DocBuckets4 = [[doc_flush_atts(check_dup_atts(Doc), Db#db.updater_fd)
             || Doc <- Bucket] || Bucket <- DocBuckets3],
     {ok, []} = write_and_commit(Db, DocBuckets4, [], [merge_conflicts | Options]),
     {ok, DocErrors};
@@ -718,7 +717,7 @@ update_docs(Db, Docs, Options, interactive_edit) ->
                 true -> [] end ++ Options,
         DocBuckets3 = [[
                 doc_flush_atts(set_new_att_revpos(
-                        check_dup_atts(Doc)), Db#db.fd)
+                        check_dup_atts(Doc)), Db#db.updater_fd)
                 || Doc <- B] || B <- DocBuckets2],
         {DocBuckets4, IdRevs} = new_revs(DocBuckets3, [], []),
         
@@ -786,7 +785,10 @@ write_and_commit(#db{update_pid=UpdatePid}=Db, DocBuckets,
             % This can happen if the db file we wrote to was swapped out by
             % compaction. Retry by reopening the db and writing to the current file
             {ok, Db2} = open_ref_counted(Db#db.main_pid, self()),
-            DocBuckets2 = [[doc_flush_atts(Doc, Db2#db.fd) || Doc <- Bucket] || Bucket <- DocBuckets],
+            DocBuckets2 = [
+                [doc_flush_atts(Doc, Db2#db.updater_fd) || Doc <- Bucket] ||
+                Bucket <- DocBuckets
+            ],
             % We only retry once
             close(Db2),
             UpdatePid ! {update_docs, self(), DocBuckets2, NonRepDocs, MergeConflicts, FullCommit},
@@ -954,25 +956,28 @@ changes_since(Db, Style, StartSeq, Fun, Options, Acc) ->
             end,
             Fun(DocInfo2, Acc2)
         end,
-    {ok, _LastReduction, AccOut} = couch_btree:fold(Db#db.docinfo_by_seq_btree,
+    {ok, _LastReduction, AccOut} = couch_btree:fold(by_seq_btree(Db),
         Wrapper, Acc, [{start_key, StartSeq + 1}] ++ Options),
     {ok, AccOut}.
 
 count_changes_since(Db, SinceSeq) ->
+    BTree = by_seq_btree(Db),
     {ok, Changes} =
-    couch_btree:fold_reduce(Db#db.docinfo_by_seq_btree,
+    couch_btree:fold_reduce(BTree,
         fun(_SeqStart, PartialReds, 0) ->
-            {ok, couch_btree:final_reduce(Db#db.docinfo_by_seq_btree, PartialReds)}
+            {ok, couch_btree:final_reduce(BTree, PartialReds)}
         end,
         0, [{start_key, SinceSeq + 1}]),
     Changes.
 
 enum_docs_since(Db, SinceSeq, InFun, Acc, Options) ->
-    {ok, LastReduction, AccOut} = couch_btree:fold(Db#db.docinfo_by_seq_btree, InFun, Acc, [{start_key, SinceSeq + 1} | Options]),
+    {ok, LastReduction, AccOut} = couch_btree:fold(
+        by_seq_btree(Db), InFun, Acc, [{start_key, SinceSeq + 1} | Options]),
     {ok, enum_docs_since_reduce_to_count(LastReduction), AccOut}.
 
 enum_docs(Db, InFun, InAcc, Options) ->
-    {ok, LastReduce, OutAcc} = couch_btree:fold(Db#db.fulldocinfo_by_id_btree, InFun, InAcc, Options),
+    {ok, LastReduce, OutAcc} = couch_btree:fold(
+        by_id_btree(Db), InFun, InAcc, Options),
     {ok, enum_docs_reduce_to_count(LastReduce), OutAcc}.
 
 % server functions
@@ -1072,7 +1077,7 @@ open_doc_revs_int(Db, IdRevs, Options) ->
         IdRevs, LookupResults).
 
 open_doc_int(Db, <<?LOCAL_DOC_PREFIX, _/binary>> = Id, _Options) ->
-    case couch_btree:lookup(Db#db.local_docs_btree, [Id]) of
+    case couch_btree:lookup(local_btree(Db), [Id]) of
     [{ok, {_, {Rev, BodyData}}}] ->
         {ok, #doc{id=Id, revs={0, [list_to_binary(integer_to_list(Rev))]}, body=BodyData}};
     [not_found] ->
@@ -1133,25 +1138,11 @@ doc_meta_info(#doc_info{high_seq=Seq,revs=[#rev_info{rev=Rev}|RestInfo]}, RevTre
     true -> [{local_seq, Seq}]
     end.
 
-read_doc(#db{fd=Fd}, OldStreamPointer) when is_tuple(OldStreamPointer) ->
-    % 09 UPGRADE CODE
-    couch_stream:old_read_term(Fd, OldStreamPointer);
 read_doc(#db{fd=Fd}, Pos) ->
     couch_file:pread_term(Fd, Pos).
 
 
-doc_to_tree(#doc{revs={Start, RevIds}}=Doc) ->
-    [Tree] = doc_to_tree_simple(Doc, lists:reverse(RevIds)),
-    {Start - length(RevIds) + 1, Tree}.
-
-
-doc_to_tree_simple(Doc, [RevId]) ->
-    [{RevId, Doc, []}];
-doc_to_tree_simple(Doc, [RevId | Rest]) ->
-    [{RevId, ?REV_MISSING, doc_to_tree_simple(Doc, Rest)}].
-
-
-make_doc(#db{fd=Fd}=Db, Id, Deleted, Bp, RevisionPath) ->
+make_doc(#db{updater_fd = Fd} = Db, Id, Deleted, Bp, RevisionPath) ->
     {BodyData, Atts} =
     case Bp of
     nil ->
@@ -1207,7 +1198,19 @@ make_doc(#db{fd=Fd}=Db, Id, Deleted, Bp, RevisionPath) ->
         }.
 
 
-increment_stat(#db{is_sys_db = true}, _Stat) ->
-    ok;
-increment_stat(#db{}, Stat) ->
-    couch_stats_collector:increment(Stat).
+increment_stat(#db{options = Options}, Stat) ->
+    case lists:member(sys_db, Options) of
+    true ->
+        ok;
+    false ->
+        couch_stats_collector:increment(Stat)
+    end.
+
+local_btree(#db{local_docs_btree = BTree, fd = ReaderFd}) ->
+    BTree#btree{fd = ReaderFd}.
+
+by_seq_btree(#db{docinfo_by_seq_btree = BTree, fd = ReaderFd}) ->
+    BTree#btree{fd = ReaderFd}.
+
+by_id_btree(#db{fulldocinfo_by_id_btree = BTree, fd = ReaderFd}) ->
+    BTree#btree{fd = ReaderFd}.

@@ -18,8 +18,20 @@
 -export([validate_docid/1]).
 -export([doc_from_multi_part_stream/2]).
 -export([doc_to_multi_part_stream/5, len_doc_to_multi_part_stream/4]).
+-export([to_path/1]).
 
 -include("couch_db.hrl").
+
+-spec to_path(#doc{}) -> path().
+to_path(#doc{revs={Start, RevIds}}=Doc) ->
+    [Branch] = to_branch(Doc, lists:reverse(RevIds)),
+    {Start - length(RevIds) + 1, Branch}.
+
+-spec to_branch(#doc{}, [RevId::binary()]) -> [branch()].
+to_branch(Doc, [RevId]) ->
+    [{RevId, Doc, []}];
+to_branch(Doc, [RevId | Rest]) ->
+    [{RevId, ?REV_MISSING, to_branch(Doc, Rest)}].
 
 % helpers used by to_json_obj
 to_json_rev(0, []) ->
@@ -310,9 +322,6 @@ to_doc_info_path(#full_doc_info{id=Id,rev_tree=Tree}) ->
 
 att_foldl(#att{data=Bin}, Fun, Acc) when is_binary(Bin) ->
     Fun(Bin, Acc);
-att_foldl(#att{data={Fd,Sp},att_len=Len}, Fun, Acc) when is_tuple(Sp) orelse Sp == null ->
-    % 09 UPGRADE CODE
-    couch_stream:old_foldl(Fd, Sp, Len, Fun, Acc);
 att_foldl(#att{data={Fd,Sp},md5=Md5}, Fun, Acc) ->
     couch_stream:foldl(Fd, Sp, Md5, Fun, Acc);
 att_foldl(#att{data=DataFun,att_len=Len}, Fun, Acc) when is_function(DataFun) ->
