@@ -38,10 +38,16 @@ update(Owner, Group) ->
         couch_task_status:update(<<"Resetting view index due to lost purge entries.">>),
         exit(reset)
     end,
+
+    MapQueueMaxSize = couch_config:get("couchdb", "view_updater_map_queue_size", 100000),
+    MapQueueMaxItems = couch_config:get("couchdb", "view_updater_map_queue_items", 500),
+    WriteQueueMaxSize = couch_config:get("couchdb", "view_updater_write_queue_size", 100000),
+    WriteQueueMaxItems = couch_config:get("couchdb", "view_updater_write_queue_items", 500),
+
     {ok, MapQueue} = couch_work_queue:new(
-        [{max_size, 100000}, {max_items, 500}]),
+        [{max_size, MapQueueMaxSize}, {max_items, MapQueueMaxItems}]),
     {ok, WriteQueue} = couch_work_queue:new(
-        [{max_size, 100000}, {max_items, 500}]),
+        [{max_size, WriteQueueMaxSize}, {max_items, WriteQueueMaxItems}]),
     Self = self(),
     ViewEmptyKVs = [{View, []} || View <- Group2#group.views],
     spawn_link(fun() -> do_maps(Group, MapQueue, WriteQueue, ViewEmptyKVs) end),
