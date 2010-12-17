@@ -41,7 +41,7 @@ handle_change(#doc_info{id=Id}, {Url, DbName, Socket} = Acc) ->
 wait_for_change(Db, UpdateSeq, Url, Socket) ->
     NewUpdateSeq = case wait_db_updated() of
     updated ->
-        case couch_server:reopen(Db) of
+        case couch_server:open(Db#db.name, []) of
         {ok, Db} ->
             couch_db:changes_since(
                 Db,
