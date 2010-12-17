@@ -943,10 +943,7 @@ changes_since(Db, Style, StartSeq, Fun, Acc) ->
     changes_since(Db, Style, StartSeq, Fun, [], Acc).
     
 changes_since(Db, Style, StartSeq, Fun, Options, Acc) ->
-    io:format("~nchanges_since: '~p'~n", [changes_since]),
     Wrapper = fun(DocInfo, _Offset, Acc2) ->
-            io:format("~nwrapper: '~p'~n", [wrapper]),
-            io:format("~nDocInfo: '~p'~n", [DocInfo]),
             #doc_info{revs=Revs} = DocInfo,
             DocInfo2 =
             case Style of
