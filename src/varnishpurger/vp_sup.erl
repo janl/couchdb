@@ -21,7 +21,7 @@ init(ChildSpecs) ->
 
 start_link() ->
     MakeChildSpecs = fun({Db, _} = VarnishSpec) -> 
-        Id = Db ++ ?b2l(couch_uuids:new()),
+        Id = Db ++ ?b2l(couch_uuids:random()),
         {Id, % allow multiple purgers per db
          {vp_purge, start, [VarnishSpec]},
          permanent,
