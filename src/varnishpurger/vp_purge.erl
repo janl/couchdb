@@ -28,23 +28,20 @@ stop() ->
 
 purge(Id, Url, DbName, Socket) ->
     BinUrl = ?l2b(Url),
-    Request = ?b2l(
-        <<"PURGE /",
-        DbName/binary,
-        "/",
-        Id/binary,
-        " HTTP/1.1\r\nHost: ",
-        BinUrl/binary,"\r\n\r\n">>),
-    ok = gen_tcp:send(Socket, Request).
+    Request = <<"PURGE /",DbName/binary,"/",Id/binary," HTTP/1.1\r\nHost: ",
+        BinUrl/binary,"\r\n\r\n">>,
+    % TODO verify socket availability / check errors
+    ok = gen_tcp:send(Socket, ?b2l(Request)).
 
 handle_change(#doc_info{id=Id}, {Url, DbName, Socket} = Acc) ->
+    % purge async, so we can handle the next change right away
     spawn_link(fun() -> purge(Id, Url, DbName, Socket) end),
     {ok, Acc}.
 
-wait_for_change(DbName, UpdateSeq, Url, Socket) ->
+wait_for_change(Db, UpdateSeq, Url, Socket) ->
     NewUpdateSeq = case wait_db_updated() of
     updated ->
-        case couch_server:open(DbName, []) of
+        case couch_server:reopen(Db) of
         {ok, Db} ->
             couch_db:changes_since(
                 Db,
@@ -52,42 +49,53 @@ wait_for_change(DbName, UpdateSeq, Url, Socket) ->
                 UpdateSeq,
                 fun handle_change/2,
                 [{dir, fwd}],
-                {Url, DbName, Socket}),
-            NewUpdateSeq2 = couch_db:get_update_seq(Db),
+                {Url, Db#db.name, Socket}),
             couch_db:close(Db),
-            NewUpdateSeq2;
+            couch_db:get_update_seq(Db); % keep new high watermark 
         _DbOpenFail ->
-            ?LOG_ERROR("Varnishpurger can't open database: '~s'", [DbName])
+            ?LOG_ERROR("Varnishpurger can't open database: '~s'",
+                [Db#db.name])
         end;
     _Else ->
         ok
     end,
-    wait_for_change(DbName, NewUpdateSeq, Url, Socket).
+    wait_for_change(Db, NewUpdateSeq, Url, Socket).
 
-init({DbNameList, Url}) ->
-    DbName = ?l2b(DbNameList),
-    case couch_server:open(DbName, []) of
-    {ok, Db} ->
-        UpdateSeq = couch_db:get_update_seq(Db),
-        couch_db:close(Db),
+split_url(Url) -> string:tokens(Url, ":").
 
-        [Ip, Port] = string:tokens(Url, ":"),
-        {ok, Socket} = gen_tcp:connect(Ip, list_to_integer(Port),
-            [binary, {packet, 0}]),
+register_for_updates(Db, Url) ->
+    UpdateSeq = couch_db:get_update_seq(Db),
+    couch_db:close(Db), % release the fd until we do get changes
+    [Ip, Port] = split_url(Url),
+    case gen_tcp:connect(Ip, list_to_integer(Port), [binary, {packet, 0}]) of
+    {ok, Socket} ->
+        % set up reciving process for update notifications
+        Pid = spawn_link(fun() ->
+            wait_for_change(Db, UpdateSeq, Url, Socket)
+        end),
 
-        Pid = spawn(fun() -> wait_for_change(DbName, UpdateSeq, Url, Socket) end),
-        {ok, _Notify} = couch_db_update_notifier:start_link(
+        % register for updates
+        {ok, _} = couch_db_update_notifier:start_link(
             fun({_, DbName2}) when DbName2 == Db#db.name ->
                 Pid ! db_updated;
             (_) ->
                 ok
             end
         );
+    {error, Reason} ->
+        ?LOG_ERROR("Varnishpurger can't connect to Varnish host: '~s' '~s'",
+            [Url, Reason])
+    end.
+
+init({DbName, Url}) ->
+    case couch_server:open(?l2b(DbName), []) of
+    {ok, Db} -> register_for_updates(Db, Url);
     _ -> ?LOG_ERROR("Varnishpurger can't open db: ~s", [DbName])
     end,
     {ok, {}}.
 
 % waits for a db_updated msg, if there are multiple msgs, collects them.
+% Duplicated code from couch_changes.erl -- this should be generalized
 wait_db_updated() ->
     receive
     db_updated ->
