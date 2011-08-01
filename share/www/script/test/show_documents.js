@@ -432,5 +432,11 @@ couchTests.show_documents = function(debug) {
         T(resp.foo == true);
       }
   );
-  
+
+  // builtin show functions
+  var doc = {_id:"test2",foo:1};
+  db.save(doc);
+  var xhr = CouchDB.request("GET", "/test_suite_db/_design/template/_show/_json_pointer/test2?pointer=/foo");
+  TEquals(1, JSON.parse(xhr.responseText), "should return 1");
+
 };

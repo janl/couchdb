@@ -78,7 +78,7 @@ handle_doc_show(Req, Db, DDoc, ShowName, Doc, DocId) ->
         JsonReq = couch_httpd_external:json_req_obj(Req, Db, DocId),
         JsonDoc = couch_query_servers:json_doc(Doc),
         [<<"resp">>, ExternalResp] =
-            couch_query_servers:ddoc_prompt(DDoc, [<<"shows">>, ShowName], [JsonDoc, JsonReq]),
+            couch_query_servers:show_doc(DDoc, [<<"shows">>, ShowName], [JsonDoc, JsonReq]),
         JsonResp = apply_etag(ExternalResp, CurrentEtag),
         couch_httpd_external:send_external_response(Req, JsonResp)
     end).
@@ -99,7 +99,7 @@ get_fun_key(DDoc, Type, Name) ->
     Src = couch_util:get_nested_json_value({Props}, [Type, Name]),
     {Lang, Src}.
 
-% /db/_design/foo/update/bar/docid
+% /db/_design/foo/_update/bar/docid
 % updates a doc based on a request
 % handle_doc_update_req(#httpd{method = 'GET'}=Req, _Db, _DDoc) ->
 %     % anything but GET
@@ -125,7 +125,7 @@ handle_doc_update_req(Req, _Db, _DDoc) ->
 send_doc_update_response(Req, Db, DDoc, UpdateName, Doc, DocId) ->
     JsonReq = couch_httpd_external:json_req_obj(Req, Db, DocId),
     JsonDoc = couch_query_servers:json_doc(Doc),
-    {Code, JsonResp1} = case couch_query_servers:ddoc_prompt(DDoc,
+    {Code, JsonResp1} = case couch_query_servers:update_doc(DDoc,
                 [<<"updates">>, UpdateName], [JsonDoc, JsonReq]) of
         [<<"up">>, {NewJsonDoc}, {JsonResp}] ->
             Options = case couch_httpd:header_value(Req, "X-Couch-Full-Commit",

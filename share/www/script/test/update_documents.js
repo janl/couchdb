@@ -165,4 +165,10 @@ couchTests.update_documents = function(debug) {
   T(xhr.status == 200);
   T(xhr.responseText.length == 32);
 
+  // test builtin update fun
+  xhr = CouchDB.request("POST",
+    "/test_suite_db/_design/update/_update/_json_pointer/" + docid);
+  TEquals(201, xhr.status, "Should return Status 201");
+  TEquals("Response", xhr.responseText, "Should return response");
+
 };

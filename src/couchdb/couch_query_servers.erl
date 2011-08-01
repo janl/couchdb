@@ -22,6 +22,7 @@
 -export([filter_view/3]).
 
 -export([with_ddoc_proc/2, proc_prompt/2, ddoc_prompt/3, ddoc_proc_prompt/3, json_doc/1]).
+-export([update_doc/3, show_doc/3]).
 
 % -export([test/0]).
 
@@ -258,6 +259,64 @@ ddoc_prompt(DDoc, FunPath, Args) ->
     with_ddoc_proc(DDoc, fun({Proc, DDocId}) ->
         proc_prompt(Proc, [<<"ddoc">>, DDocId, FunPath, Args])
     end).
+
+update_doc(DDoc, [<<"updates">>, UpdateName], [JsonDoc, JsonReq]) ->
+    case UpdateName of
+    <<"_",BuiltinUpdateName/binary>> -> % handle builtin doc update
+        case BuiltinUpdateName of
+        <<"json_pointer">> ->
+            [NewDoc, Response] = builtin_update_json_pointer(JsonDoc, JsonReq),
+            [<<"up">>, NewDoc, Response];
+        _Else -> throw({error, <<"Unknown Builtin Update Function: ",
+            BuiltinUpdateName>>})
+    end;
+    _Else ->
+        ddoc_prompt(DDoc, [<<"updates">>, UpdateName], [JsonDoc, JsonReq])
+    end.
+
+
+% Builtin update functions
+% Register them in update_doc/3
+% The signature is [NewDoc, Response] = Fun(Doc, Req)
+% Doc and Req are ejson represenations of the document referenced (or null if
+% no doc id is specified or the specified document does not exist)
+% NewDoc is the ejson to be written to the database.
+% Response is the response ejson to send back to the user, it can include a
+% headers and a body part
+% See json_pointer for a minimal example
+
+builtin_update_json_pointer(Doc, {Req}) ->
+    Pointer = case proplists:get_value(<<"query">>, Req) of
+        undefined -> throw({error, pointer_not_found});
+        {Query} -> proplists:get_value(<<"pointer">>, Query, "/")
+    end,
+    NewDoc = jsonpointer:set(Pointer, Doc, proplists:get_value(<<"body">>, Req)),
+    [{NewDoc}, {[{<<"body">>,<<"{\"ok\":true}\n">>}]}].
+
+
+show_doc(DDoc, [<<"shows">>, ShowName], [JsonDoc, JsonReq]) ->
+    case ShowName of
+    <<"_",BuiltinShowName/binary>> -> % handle builtin doc update
+        case BuiltinShowName of
+        <<"json_pointer">> ->
+            Response = builtin_show_json_pointer(JsonDoc, JsonReq),
+            [<<"resp">>, Response];
+        _Else -> throw({error, <<"Unknown Builtin Show Function: ",
+            BuiltinShowName>>})
+    end;
+    _Else ->
+        ddoc_prompt(DDoc, [<<"shows">>, ShowName], [JsonDoc, JsonReq])
+    end.
+
+% Builtin show fun
+builtin_show_json_pointer(Doc, {Req}) ->
+    Pointer = case proplists:get_value(<<"query">>, Req) of
+        undefined -> "/";
+        {Query} -> proplists:get_value(<<"pointer">>, Query, "/")
+    end,
+    Value = jsonpointer:get(Pointer, Doc),
+    {[{<<"json">>, Value}]}.
+
 
 with_ddoc_proc(#doc{id=DDocId,revs={Start, [DiskRev|_]}}=DDoc, Fun) ->
     Rev = couch_doc:rev_to_str({Start, DiskRev}),
