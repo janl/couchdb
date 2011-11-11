@@ -5,6 +5,12 @@ otp_release:
 before_script:
   - sudo apt-get update
   - sudo apt-get -y install xulrunner-1.9.2-dev libicu-dev libcurl4-openssl-dev
+  # the right way to do this would be:
+  # - sudo "echo /usr/lib/xulrunner-1.9.2.24 >> /etc/ld.so.conf.d/xulrunner.conf"
+  # - sudo "echo /usr/lib/xulrunner-devel-1.9.2.24" >> /etc/ld.so.conf.d/xulrunner.conf
+  # - sudo /sbin/ldconfig
+  # but that obviously doesn't work, so we do:
+  - sudo ln -s /usr/lib/xulrunner-1.9.2.*/libmozjs.so /usr/lib/
   - ./bootstrap
   - ./configure
 script:
