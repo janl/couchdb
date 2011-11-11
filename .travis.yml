@@ -2,6 +2,7 @@ language: erlang
 otp_release:
    - R14B04
    - R14B03
+   - R14B02
 before_script:
   - sudo apt-get -y install xulrunner-1.9 libicu-dev libcurl4-openssl-dev
   - ./bootstrap
