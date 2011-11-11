@@ -3,7 +3,7 @@ otp_release:
    - R14B04
    - R14B01
 before_script:
-  - sudo apt-get -y install xulrunner-1.9 libicu-dev libcurl4-openssl-dev
+  - sudo apt-get -y install xulrunner-1.9.2-dev libicu-dev libcurl4-openssl-dev
   - ./bootstrap
   - ./configure
 script:
