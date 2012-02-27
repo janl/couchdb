@@ -79,7 +79,13 @@ static ErlDrvData couch_drv_start(ErlDrvPort port, char *buff)
     return (ErlDrvData)pData;
 }
 
-static int return_control_result(void* pLocalResult, int localLen, char **ppRetBuf, int returnLen)
+#if ERL_DRV_EXTENDED_MAJOR_VERSION == 1
+// < R15B
+int return_control_result(void* pLocalResult, int localLen, char **ppRetBuf, int returnLen)
+#else
+// >= R15B
+ErlDrvSSizeT return_control_result(void* pLocalResult, int localLen, char **ppRetBuf, ErlDrvSizeT returnLen)
+#endif
 {
     if (*ppRetBuf == NULL || localLen > returnLen) {
         *ppRetBuf = (char*)driver_alloc_binary(localLen);
@@ -91,8 +97,13 @@ static int return_control_result(void* pLocalResult, int localLen, char **ppRetB
     return localLen;
 }
 
-static int couch_drv_control(ErlDrvData drv_data, unsigned int command, char *pBuf,
-             int bufLen, char **rbuf, int rlen)
+#if ERL_DRV_EXTENDED_MAJOR_VERSION == 1
+// < R15B
+static int couch_drv_control(ErlDrvData drv_data, unsigned int command, char *pBuf, int bufLen, char **rbuf, int rlen)
+#else
+// >= R15B
+ErlDrvSSizeT couch_drv_control(ErlDrvData drv_data, unsigned int command, char *pBuf, ErlDrvSizeT bufLen, char **rbuf, ErlDrvSizeT rlen)
+#endif
 {
 
     couch_drv_data* pData = (couch_drv_data*)drv_data;
