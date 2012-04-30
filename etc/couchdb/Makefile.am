@@ -28,6 +28,7 @@ if WINDOWS
 default.ini: default.ini.tpl
 	sed -e "s|%bindir%|.|g" \
 	    -e "s|%localconfdir%|$(localconfdir)|g" \
+	    -e "s|%htmldir%|$(htmldir)|g" \
 	    -e "s|%localdatadir%|../share/couchdb|g" \
 	    -e "s|%localbuilddatadir%|../share/couchdb|g" \
 	    -e "s|%localstatelibdir%|../var/lib/couchdb|g" \
@@ -43,6 +44,7 @@ default.ini: default.ini.tpl
 	sed -e "s|%bindir%|$(bindir)|g" \
 	    -e "s|%localconfdir%|$(localconfdir)|g" \
 	    -e "s|%localdatadir%|$(localdatadir)|g" \
+	    -e "s|%htmldir%|$(htmldir)|g" \
 	    -e "s|%localbuilddatadir%|$(localdatadir)|g" \
 	    -e "s|%localstatelibdir%|$(localstatelibdir)|g" \
 	    -e "s|%localstatelogdir%|$(localstatelogdir)|g" \
@@ -58,6 +60,7 @@ default_dev.ini: default.ini.tpl
 	sed -e "s|%bindir%|$(abs_top_builddir)/bin|g" \
 	    -e "s|%localconfdir%|$(abs_top_builddir)/etc/couchdb|g" \
 	    -e "s|%localdatadir%|$(abs_top_srcdir)/share|g" \
+	    -e "s|%htmldir%|$(abs_top_srcdir)/share/docs|g" \
 	    -e "s|%localbuilddatadir%|$(abs_top_builddir)/share|g" \
 	    -e "s|%localstatelibdir%|$(abs_top_builddir)/tmp/lib|g" \
 	    -e "s|%localstatelogdir%|$(abs_top_builddir)/tmp/log|g" \
