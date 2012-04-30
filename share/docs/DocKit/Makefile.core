@@ -1,0 +1,3 @@
+# Set the relative directory for tools repo
+
+COUCHDB_TOOLS ?= $(COUCHDB_ROOT)/../couchdocs-tools

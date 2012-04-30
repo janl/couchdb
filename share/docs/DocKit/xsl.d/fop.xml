@@ -1,0 +1,21 @@
+<fop version="1.0">
+  <!-- Strict user configuration -->
+  <strict-configuration>true</strict-configuration>
+
+  <!-- Strict FO validation -->
+   <strict-validation>true</strict-validation> 
+   <renderer mime="application/pdf">
+      <fonts>
+         <!-- automatically detect operating system installed fonts -->
+         <directory recursive="true">/Library/Fonts</directory>
+         <directory recursive="true">/System/Library/Fonts</directory>
+         <auto-detect/>  
+      <substitutions>
+         <substitution>
+            <from font-family="Times New Roman"/>
+            <to font-family="Times"/>
+         </substitution>
+         </substitutions>
+      </fonts>
+   </renderer>
+</fop>

@@ -1,0 +1,98 @@
+# -*-makefile-*-
+
+include $(COUCHDB_MAKED)/vars-couchdocs
+
+.SECONDARY:
+
+%-ready.xml: %.xml $(XSLT_READY) $(FINALPARSE) $(COUCHDOCS_MODULE) Makefile.depends
+	$(XSLTPROC) \
+		$(XSLT_READY) $< > $@.tmp
+	$(FINALPARSE) \
+		--opt docroot=$(COUCHDB_ROOT) \
+		--opt metaroot=$(META_DOCROOT) \
+		--opt version=$(BASE_VERSION) \
+		--opt filelist="$(XML_SOURCES)" \
+		$@.tmp $@
+	rm -f $@.tmp
+
+%-ready-online.xml: %.xml $(XSLT_READY_ONLINE) $(FINALPARSE) $(COUCHDOCS_MODULE)
+	$(XSLTPROC) \
+		$(XSLT_READY_ONLINE) $< > $@.tmp
+	$(FINALPARSE) \
+		--opt docroot=$(COUCHDB_ROOT) \
+		--opt metaroot=$(META_DOCROOT) \
+		--opt version=$(BASE_VERSION) \
+		--opt filelist="$(XML_SOURCES)" \
+		$@.tmp $@
+	rm -f $@.tmp
+
+%.check: %-ready.xml
+	$(DBCHECK) $<
+
+%.urlcheck: %-ready.xml
+	$(DBCHECK) --opt checkulink=1 $<
+
+%.valid: %.xml
+	$(XMLLINT) --xinclude --postvalid --noout --nonet $<
+
+%.format: %.xml
+	$(CLEAN_END_SPACE) $<
+	$(UPDATE_IMAGE_SIZE) $<
+	$(XMLFORMAT) -i $<
+
+depend-reset: $(DEPENDPARSE)
+	echo > Makefile.depends
+
+depend:
+	echo > Makefile.depends
+	$(MAKE) --directory . real-depend
+
+real-depend: $(DEPENDPARSE)
+	$(DEPENDPARSE) \
+		--opt docroot=$(COUCHDB_ROOT) \
+		--opt toolsroot=$(COUCHDB_TOOLS) \
+		--opt binroot=$(COUCHDB_BIN) \
+		--opt metaroot=$(META_DOCROOT)  \
+		--opt depend=1 \
+		--opt metaparser=$(METAPARSE) \
+		--opt buildtype=$(BUILD_TYPE) \
+		--opt buildsrc=$(BUILD_SRC) \
+		$(BASE_DOCUMENT).xml Makefile.depends.tmp; \
+	mv Makefile.depends.tmp Makefile.depends;\
+
+reformat:
+	set -e; \
+	for xmlfile in $(XML_BASE_SOURCES); \
+	do \
+		echo Reformatting $$xmlfile; \
+		$(MAKE) $$xmlfile.format; \
+	done
+
+docs:
+	set -e; \
+	for type in $(BUILD_FORMATS); \
+	do \
+		echo Building all formats for $(BASE_DOCUMENT); \
+		$(MAKE) $(BASE_DOCUMENT).$$type; \
+	done
+
+dumpmeta:
+	@echo XSLTPROC $(XSLTPROC)
+	@echo XML_CATALOG_FILES $(XML_CATALOG_FILES)
+	@echo COUCHDB_BIN $(COUCHDB_BIN)
+	@echo COUCHDB_ROOT $(COUCHDB_ROOT)
+	@echo COUCHDB_TOOLS $(COUCHDB_TOOLS)
+	@echo COUCHDB_XSLD $(COUCHDB_XSLD)
+
+clean::
+	rm -f *-ready.xml *-ready-online.xml
+	set -e;
+
+validate:
+	set -e; \
+	$(MAKE) $(BASE_DOCUMENT).valid
+
+ready:
+	set -e; \
+	$(MAKE) $(BASE_DOCUMENT)-ready.xml $(BASE_DOCUMENT)-ready-online.xml
+

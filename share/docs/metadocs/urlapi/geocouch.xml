@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!DOCTYPE urlapilist SYSTEM "couchdocs:urlapi.dtd">
+<urlapilist>
+
+  <defaultreturncodes>
+
+    <returncode code="200">
+      Request completed successfully.
+    </returncode>
+
+    <returncode code="201">
+      Document created successfully.
+    </returncode>
+
+    <returncode code="202">
+      Request has been accepted, but the corresponding operation may not
+      have completed.
+    </returncode>
+
+    <returncode code="304">
+      The additional content requested has not been modified.
+    </returncode>
+
+    <returncode code="400">
+      Bad request structure. The error can indicate an error with the
+      request URL, path or headers.
+    </returncode>
+
+    <returncode code="401">
+      The item requested was not available using the supplied
+      authorization, or authorization was not supplied.
+    </returncode>
+
+    <returncode code="403">
+      The requested item or operation is forbidden.
+    </returncode>
+
+    <returncode code="404">
+      The requested content could not be found. The returned content
+      will include further information, as a JSON object, if available.
+    </returncode>
+
+    <returncode code="405">
+      A request was made using an invalid HTTP request type for the URL
+      requested.
+    </returncode>
+
+    <returncode code="406">
+      The requested content type is not supported by the server.
+    </returncode>
+
+    <returncode code="409">
+      Request resulted in an update conflict.
+    </returncode>
+
+    <returncode code="412">
+      The request headers from the client and the capabilities of the
+      server do not match.
+    </returncode>
+
+    <returncode code="415">
+      The content types supported, and the content type of the
+      information being requested or submitted indicate that the content
+      type is not supported.
+    </returncode>
+
+    <returncode code="416">
+      The range specified in the request header cannot be satisfied by
+      the server.
+    </returncode>
+
+    <returncode code="417">
+      When sending documents in bulk, the bulk load operation failed.
+    </returncode>
+
+    <returncode code="500">
+      The request was invalid, either because the supplied JSON was
+      invalid, or invalid information was supplied as part of the
+      request.
+    </returncode>
+
+  </defaultreturncodes>
+
+  <urlapi path="/db/_design/design-doc/_spatial/_compact" id="db-compact-design-doc-spatial"
+ class="geocouch">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Starts a compaction for a spatial index within the specified
+        design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="202">
+        Compaction request has been accepted
+      </returncode>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_spatial_cleanup" id="db-spatial-cleanup"
+ class="geocouch">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Cleans up spatial indexes that are no longer used within a
+        database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="202">
+        Cleanup request has been accepted
+      </returncode>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_spatial/_info" id="db-design-designdoc-spatial-info"
+ class="geocouch">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Obtains information about a spatial index design
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_spatial/spatial-name" id="db-design-designdoc-spatial-spatialname" class="geocouch">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="stale" opt="yes" type="string" default="">
+
+          <argdesc>
+            Allow the results from a stale view to be used
+          </argdesc>
+
+          <option value="ok">Allow stale views</option>
+
+          <option value="update_after" iv="1.1">Allow stale view, update view after
+        access</option>
+
+        </arg>
+
+        <arg name="bbox" opt="yes" type="string" default="false">
+
+          <argdesc>
+            Specify the bounding box for a spatial query
+          </argdesc>
+
+        </arg>
+
+        <arg name="plane_bounds" opt="yes" type="string" default="false">
+
+          <argdesc>
+            Specify the plane bounds for a spatial query
+          </argdesc>
+
+        </arg>
+
+        <arg name="count" opt="yes" type="numeric" default="false">
+
+          <argdesc>
+            Specify that only a count of the number of items in a
+            spatial query should be returned
+          </argdesc>
+
+          <option value="true">Show the count summary</option>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns results of the view
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the documents returned by the view
+      </response>
+
+    </access>
+
+  </urlapi>
+
+</urlapilist>

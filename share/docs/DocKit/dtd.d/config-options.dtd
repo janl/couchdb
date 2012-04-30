@@ -1,0 +1,12 @@
+<!ELEMENT configoptions (#PCDATA | configclasses | configopts)*>
+<!ELEMENT configopts (#PCDATA | configopt)*>
+<!ELEMENT default (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT valuespec (#PCDATA | default)*>
+<!ATTLIST valuespec type CDATA #IMPLIED>
+<!ELEMENT configopt (#PCDATA | description | valuespec)*>
+<!ATTLIST configopt id CDATA #IMPLIED>
+<!ATTLIST configopt class CDATA #IMPLIED>
+<!ELEMENT configclass (#PCDATA | description)*>
+<!ATTLIST configclass id CDATA #IMPLIED>
+<!ELEMENT configclasses (#PCDATA | configclass)*>

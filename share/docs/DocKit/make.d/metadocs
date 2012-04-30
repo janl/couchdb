@@ -1,0 +1,16 @@
+# -*-makefile-*-
+
+metadoc-%.xml: %-metasrc.xml
+	$(METAPARSE) \
+		--opt docroot=$(COUCHDB_ROOT) \
+		--opt metaroot=$(META_DOCROOT) \
+		--opt version=$(BASE_VERSION) \
+		$< $@.tmp
+	mv $@.tmp $@
+
+%.metavalid: %.xml %.valid
+	$(METAVALIDATE) --opt docroot=$(COUCHDB_ROOT) --opt metaroot=$(META_DOCROOT) \
+		 --opt metatype=$(METATYPE) $<
+
+clean::
+	rm -f metadoc-*.xml

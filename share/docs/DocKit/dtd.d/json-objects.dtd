@@ -1,0 +1,50 @@
+<!-- JSON structures 
+
+Can be made up of structure's (top level items), and substructures,
+which are children (or components) of the larger structures
+
+-->
+
+<!ELEMENT jsonstructures (#PCDATA | structure | substructure)*>
+
+<!-- Structures and substructures are identical, except that 
+structures can be part of top-level summaries in the output
+
+description - description of the JSON structure
+field       - one or more fields in the structure
+seealso     - Points to a related structure
+merge       - merges the content from another entry
+-->
+
+<!ELEMENT structure (#PCDATA | description | field | seealso | merge)*>
+<!ATTLIST structure id CDATA #IMPLIED>
+<!ATTLIST structure dv CDATA #IMPLIED>
+<!ATTLIST structure iv CDATA #IMPLIED>
+<!ATTLIST structure ov CDATA #IMPLIED>
+<!ATTLIST structure rv CDATA #IMPLIED>
+<!ELEMENT substructure (#PCDATA | description | field | seealso | merge)*>
+<!ATTLIST substructure id CDATA #IMPLIED>
+
+<!-- Description for the structure -->
+
+<!ELEMENT description (#PCDATA)>
+
+<!-- Individual field -->
+
+<!ELEMENT field (#PCDATA | fielddesc | merge)*>
+<!ATTLIST field id CDATA #REQUIRED>
+<!ATTLIST field optional (yes|no) #REQUIRED>
+<!ATTLIST field type (boolean|numeric|string|array|object|function) #REQUIRED>
+<!ATTLIST field dv CDATA #IMPLIED>
+<!ATTLIST field iv CDATA #IMPLIED>
+<!ATTLIST field ov CDATA #IMPLIED>
+<!ATTLIST field rv CDATA #IMPLIED>
+<!ELEMENT fielddesc (#PCDATA)>
+
+<!-- Incorporate other structures -->
+
+<!ELEMENT merge (#PCDATA)>
+<!ATTLIST merge id CDATA #REQUIRED>
+
+<!ELEMENT seealso (#PCDATA)>
+<!ATTLIST seealso id CDATA #IMPLIED>

@@ -1,0 +1,2621 @@
+<?xml version="1.0"?>
+<!DOCTYPE urlapilist SYSTEM "couchdocs:urlapi.dtd">
+<urlapilist>
+
+  <defaultreturncodes>
+
+    <returncode code="200">
+      Request completed successfully.
+    </returncode>
+
+    <returncode code="201">
+      Document created successfully.
+    </returncode>
+
+    <returncode code="202">
+      Request has been accepted, but the corresponding operation may not
+      have completed.
+    </returncode>
+
+    <returncode code="304">
+      The additional content requested has not been modified.
+    </returncode>
+
+    <returncode code="400">
+      Bad request structure. The error can indicate an error with the
+      request URL, path or headers.
+    </returncode>
+
+    <returncode code="401">
+      The item requested was not available using the supplied
+      authorization, or authorization was not supplied.
+    </returncode>
+
+    <returncode code="403">
+      The requested item or operation is forbidden.
+    </returncode>
+
+    <returncode code="404">
+      The requested content could not be found. The returned content
+      will include further information, as a JSON object, if available.
+    </returncode>
+
+    <returncode code="405">
+      A request was made using an invalid HTTP request type for the URL
+      requested.
+    </returncode>
+
+    <returncode code="406">
+      The requested content type is not supported by the server.
+    </returncode>
+
+    <returncode code="409">
+      Request resulted in an update conflict.
+    </returncode>
+
+    <returncode code="412">
+      The request headers from the client and the capabilities of the
+      server do not match.
+    </returncode>
+
+    <returncode code="415">
+      The content types supported, and the content type of the
+      information being requested or submitted indicate that the content
+      type is not supported.
+    </returncode>
+
+    <returncode code="416">
+      The range specified in the request header cannot be satisfied by
+      the server.
+    </returncode>
+
+    <returncode code="417">
+      When sending documents in bulk, the bulk load operation failed.
+    </returncode>
+
+    <returncode code="500">
+      The request was invalid, either because the supplied JSON was
+      invalid, or invalid information was supplied as part of the
+      request.
+    </returncode>
+
+  </defaultreturncodes>
+
+  <urlapi path="/" id="root" xrefto="root" class="misc">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Get the welcome message and version information
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Welcome message and version
+      </response>
+
+      <returncode code="200"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/favicon.ico" id="favicon" xrefto="favicon" class="misc">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Get the site icon
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Binary content for the favicon.ico site icon
+      </response>
+
+      <returncode code="200"/>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_active_tasks" id="active-tasks" xrefto="active-tasks" class="misc">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Obtain a list of the tasks running in the server
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        List of running tasks, including the task type, name, status and
+        process ID
+      </response>
+
+      <returncode code="200"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_replicate" id="replicate" xrefto="replicate" class="misc">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Set or cancel replication
+      </description>
+
+      <request>
+        Replication specification
+      </request>
+
+      <response>
+        Welcome message and version
+      </response>
+
+      <returncode code="200">
+        Replication request successfully completed
+      </returncode>
+
+      <returncode code="202">
+        Continuous replication request has been accepted
+      </returncode>
+
+      <returncode code="404">
+        Either the source or target DB is not found
+      </returncode>
+
+      <returncode code="500">
+        JSON specification was invalid
+      </returncode>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_uuids" id="uuids" xrefto="uuids" class="misc">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="count" opt="yes" type="numeric">
+
+          <argdesc>
+            Number of UUIDs to return
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Get generated UUIDs from the server
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        List of UUIDs
+      </response>
+
+      <returncode code="200"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_restart" id="restart" xrefto="restart" class="misc">
+
+    <access admin="yes" method="POST">
+
+      <description>
+        Restart the server
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON status message
+      </response>
+
+      <returncode code="201"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_stats" id="stats" xrefto="stats" class="misc">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Return server statistics
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Server statistics
+      </response>
+
+      <returncode code="200"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_sleep" id="sleep" xrefto="sleep" class="misc"
+        ov="1.0.0">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Waits for a specified number of milliseconds
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Success when the number of milliseconds specified has elapsed
+      </response>
+
+      <returncode code="200"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_utils" id="utils" xrefto="utils" class="misc">
+
+    <access admin="no" method="GET">
+
+      <description>
+        CouchDB administration interface (Futon)
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Administration interface
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_all_dbs" id="all-dbs" xrefto="all-dbs" class="misc">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Get a list of all the DBs
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON list of DBs
+      </response>
+
+      <returncode code="200"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_log" id="log" xrefto="log" class="misc">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="bytes" opt="yes" type="numeric" default="1000">
+
+          <argdesc>
+            Bytes to be returned
+          </argdesc>
+
+        </arg>
+
+        <arg name="offset" opt="yes" type="numeric" default="0">
+
+          <argdesc>
+            Offset in bytes where the log tail should be started
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Return the server log file
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Log content
+      </response>
+
+      <returncode code="200"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_config" id="config" xrefto="config" class="config">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Obtain a list of the entire server configuration
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Returns a structure configuration name and value pairs,
+        organized by section
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/_config/section" id="config-section" xrefto="config-section" class="config">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Get all the configuration values for the specified section
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        All the configuration values within a specified section
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi  path="/_config/section/key" id="config-section-key"
+      xrefto="config-section-key" class="config">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Get a specific section/configuration value
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Value of the specified key/section
+      </response>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <description>
+        Set the specified configuration value
+      </description>
+
+      <request>
+        Value structure
+      </request>
+
+      <response>
+        Previous value
+      </response>
+
+      <returncode code="200">
+        Configuration option updated successfully
+      </returncode>
+
+      <returncode code="500">
+        Error setting configuration
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Current revision of the document for validation
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Delete the current setting
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Previous value
+      </response>
+
+      <returncode code="409">
+        Supplied revision is incorrect or missing
+      </returncode>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi  path="/_session" id="session" xrefto="session" class="auth">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Returns cookie based login user information
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the current session information
+      </response>
+
+    </access>
+
+    <access admin="no" method="POST">
+
+      <description>
+        Do cookie based user login
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <description>
+        Logout cookie based user
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi  path="/_oauth/access_token" id="access-token" xrefto="access-token" class="auth">
+
+    <access admin="no" method="GET">
+
+      <description>
+        TBC
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi  path="/_oauth/authorize" id="authorize" xrefto="authorize" class="auth">
+
+    <access admin="no" method="GET">
+
+      <description>
+        TBC
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+    <access admin="no" method="POST">
+
+      <description>
+        TBC
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi  path="/_oauth/request_token" id="request-token" xrefto="authorize" class="auth">
+
+    <access admin="no" method="GET">
+
+      <description>
+        TBC
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi  path="/db" id="db" xrefto="db" class="db">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Returns database information
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Information about the database in JSON format
+      </response>
+
+      <returncode code="404"/>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <description>
+        Create a new database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="400">
+        Invalid database name
+      </returncode>
+
+      <returncode code="412">
+        Database already exists
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <description>
+        Delete an existing database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="200">
+        Database has been deleted
+      </returncode>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi  path="/db/_changes" id="db-changes" xrefto="db-changes" class="db">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="since" opt="yes" type="numeric" default="0">
+
+          <argdesc>
+            Start the results from changes immediately after the
+            specified sequence number
+          </argdesc>
+
+        </arg>
+
+        <arg name="feed" opt="yes" type="string" default="normal">
+
+          <argdesc>
+            Type of feed
+          </argdesc>
+
+          <option value="normal">Normal mode</option>
+
+          <option value="longpoll">Long polling mode</option>
+
+          <option value="continuous">Continuous (non-polling) mode</option>
+
+        </arg>
+
+        <arg name="heartbeat" opt="yes" type="numeric" default="60000"
+        qty="milliseconds">
+
+          <argdesc>
+            Period after which an empty line is sent during longpoll or
+            continuous
+          </argdesc>
+
+        </arg>
+
+        <arg name="timeout" opt="yes" type="numeric" default="60000"
+        qty="milliseconds">
+
+          <argdesc>
+            Maximum period to wait before the response is sent
+          </argdesc>
+
+        </arg>
+
+        <arg name="filter" opt="yes" type="string" default="none">
+
+          <argdesc>
+            Filter function from a design document to get updates
+          </argdesc>
+          
+          <option iv="1.2" value="_doc_ids">Show only specific document IDs</option>
+
+          <option iv="1.2" value="_design">Shown only specific design documents</option>
+
+        </arg>
+
+        <arg name="doc_ids" opt="yes" type="json" default="none" iv="1.2">
+
+          <argdesc>
+            Specify the list of documents IDs to be filtered
+          </argdesc>
+
+        </arg>
+        <arg name="include_docs" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Include the document with the result
+          </argdesc>
+
+        </arg>
+
+        <arg name="limit" opt="yes" type="numeric" default="none">
+
+          <argdesc>
+            Maximum number of rows rows to return
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns changes for the given database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the changes to the database
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi id="db-compact" xrefto="db-compact" class="db" path="/db/_compact">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Starts a compaction for the database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="202">
+        Compaction request has been accepted
+      </returncode>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_compact/design-doc" id="db-compact-design-doc"
+      xrefto="db-compact-design-doc" class="db">
+
+    <access admin="yes" method="POST">
+
+      <description>
+        Starts a compaction for all the views in the selected design
+        document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="202">
+        Compaction request has been accepted
+      </returncode>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_view_cleanup" id="db-view-cleanup" xrefto="db-view-cleanup" class="db">
+
+    <access admin="yes" method="POST">
+
+      <description>
+        Removes view files that are not used by any design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_temp_view" id="db-temp-view" xrefto="db-temp-view" class="db">
+
+    <access admin="yes" method="POST">
+
+      <description>
+        Execute a given view function for all documents and return the
+        result
+      </description>
+
+      <request>
+        JSON with the temporary view definition
+      </request>
+
+      <response>
+        Temporary view result set
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_ensure_full_commit" id="db-ensure-full-commit" xrefto="db-ensure-full-commit" class="db">
+
+    <access admin="no" method="POST">
+
+      <queryargs iv="2.0">
+
+        <arg name="seq" opt="yes" type="numeric">
+
+          <argdesc>
+            Sequence ID up to which transactions will be committed to
+            disk
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Makes sure all uncommitted changes are written and synchronized
+        to the disk
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON success statement
+      </response>
+
+      <returncode code="200">
+        Commit completed successfully
+      </returncode>
+
+      <returncode code="404"/>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_bulk_docs" id="db-bulk-docs" xrefto="db-bulk-docs" class="db">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Insert multiple documents in to the database in a single request
+      </description>
+
+      <request>
+        JSON of the docs and updates to be applied
+      </request>
+
+      <response>
+        JSON of updated documents
+      </response>
+
+      <returncode code="201">
+        Document(s) have been created or updated
+      </returncode>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_purge" id="db-purge" xrefto="db-purge" class="db">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Purge some historical documents entirely from database history
+      </description>
+
+      <request>
+        JSON of the document IDs/revisions to be purged
+      </request>
+
+      <response>
+        JSON structure with purged documents and purge sequence
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_all_docs" id="db-all-docs" xrefto="db-all-docs" class="db">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="key" opt="yes" type="string">
+
+          <argdesc>
+            Return only documents that match the specified key
+          </argdesc>
+
+        </arg>
+
+        <arg name="startkey" opt="yes" type="string">
+
+          <argdesc>
+            Return records starting with the specified key
+          </argdesc>
+
+        </arg>
+
+        <arg name="startkey_docid" opt="yes" type="string">
+
+          <argdesc>
+            Return records starting with the specified document ID
+          </argdesc>
+
+        </arg>
+
+        <arg name="endkey" opt="yes" type="string">
+
+          <argdesc>
+            Stop returning records when the specified key is reached
+          </argdesc>
+
+        </arg>
+
+        <arg name="endkey_docid" opt="yes" type="string">
+
+          <argdesc>
+            Stop returning records when the specified document ID is
+            reached
+          </argdesc>
+
+        </arg>
+
+        <arg name="limit" opt="yes" type="numeric">
+
+          <argdesc>
+            Limit the number of the returned documents to the specified
+            number
+          </argdesc>
+
+        </arg>
+
+        <arg name="stale" opt="yes" type="string" default="">
+
+          <argdesc>
+            Allow the results from a stale view to be used
+          </argdesc>
+
+          <option value="ok">Allow stale views</option>
+
+        </arg>
+
+        <arg name="descending" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Return the documents in descending by key order
+          </argdesc>
+
+        </arg>
+
+        <arg name="skip" opt="yes" type="numeric" default="0">
+
+          <argdesc>
+            Skip this number of records before starting to return the
+            results
+          </argdesc>
+
+        </arg>
+
+        <arg name="group" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Group the results using the reduce function to a group or
+            single row
+          </argdesc>
+
+        </arg>
+
+        <arg name="group_level" opt="yes" type="numeric">
+
+          <argdesc>
+            Specify the group level to be used
+          </argdesc>
+
+        </arg>
+
+        <arg name="reduce" opt="yes" type="boolean" default="true">
+
+          <argdesc>
+            Use the reduction function
+          </argdesc>
+
+        </arg>
+
+        <arg name="include_docs" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Include the full content of the documents in the return
+          </argdesc>
+
+        </arg>
+
+        <arg name="inclusive_end" opt="yes" type="boolean" default="true">
+
+          <argdesc>
+            Specifies whether the specified end key should be included
+            in the result
+          </argdesc>
+
+        </arg>
+
+        <arg name="update_seq" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Include the update sequence in the generated results
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns a built-in view of all documents in this database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON object containing document information, ordered by the
+        document ID
+      </response>
+
+    </access>
+
+    <access admin="no" method="POST">
+
+      <description>
+        Returns certain rows from the built-in view of all documents
+      </description>
+
+      <request>
+        JSON of the document IDs you want included
+      </request>
+
+      <response>
+        JSON of the returned view
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_missing_revs" id="db-missing-revs" xrefto="db-missing-revs" class="db">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Given a list of document revisions, returns the document
+        revisions that do not exist in the database
+      </description>
+
+      <request>
+        JSON list of document revisions
+      </request>
+
+      <response>
+        JSON of missing revisions
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_revs_diff" id="db-revs-diff" xrefto="db-revs-diff" class="db">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Given a list of document revisions, returns differences between
+        the given revisions and ones that are in the database
+      </description>
+
+      <request>
+        JSON list of document and revisions
+      </request>
+
+      <response>
+        JSON list of differences from supplied document/revision list
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_security" id="db-security" xrefto="db-security" class="db">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Returns the special security object for the database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the security object
+      </response>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <description>
+        Sets the special security object for the database
+      </description>
+
+      <request>
+        JSON specifying the admin and user security for the database
+      </request>
+
+      <response>
+        JSON status message
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_revs_limit" id="db-revs-limit" xrefto="db-revs-limit" class="db">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Gets the limit of historical revisions to store for a single
+        document in the database
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        The current revision limit setting
+      </response>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <description>
+        Sets the limit of historical revisions to store for a single
+        document in the database
+      </description>
+
+      <request>
+        A scalar integer of the revision limit setting
+      </request>
+
+      <response>
+        Confirmation of setting of the revision limit
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db" id="dbdoc" xrefto="db" class="dbdoc">
+
+    <access admin="no" method="POST">
+
+      <queryargs>
+
+        <arg name="batch" opt="yes" type="string">
+
+          <argdesc>
+            Allow document store request to be batched with others
+          </argdesc>
+
+          <option value="ok">Enable</option>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Create a new document
+      </description>
+
+      <request>
+        JSON of the new document
+      </request>
+
+      <response>
+        JSON with the committed document information
+      </response>
+
+      <returncode code="201">
+        Document has been created successfully
+      </returncode>
+
+      <returncode code="409">
+        Conflict - a document with the specified document ID already
+        exists
+      </returncode>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/doc" id="db-doc" xrefto="db-doc" class="dbdoc">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="revs" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of the revisions for the document
+          </argdesc>
+
+        </arg>
+
+        <arg name="revs_info" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of detailed revision information for the
+            document
+          </argdesc>
+
+          <option value="true">Includes the revisions</option>
+
+        </arg>
+
+        <arg name="conflicts" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Returns the conflict tree for the document.
+          </argdesc>
+
+          <option value="true">Includes the revisions</option>
+
+        </arg>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Specify the revision to return
+          </argdesc>
+
+          <option value="true">Includes the revisions</option>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns the latest revision of the document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Returns the JSON for the document
+      </response>
+
+      <returncode code="201">
+        Document created
+      </returncode>
+
+      <returncode code="400">
+        The format of the request or revision was invalid
+      </returncode>
+
+      <returncode code="404">
+        The specified document or revision cannot be found, or has been
+        deleted
+      </returncode>
+
+      <returncode code="409">
+        Conflict - a document with the specified document ID already
+        exists
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="HEAD">
+
+      <queryargs>
+
+        <arg name="revs" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of the revisions for the document
+          </argdesc>
+
+        </arg>
+
+        <arg name="revs_info" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of detailed revision information for the
+            document
+          </argdesc>
+
+        </arg>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Specify the revision to return
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns bare information in the HTTP Headers for the document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        None
+      </response>
+
+      <returncode code="404">
+        The specified document or revision cannot be found, or has been
+        deleted
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <queryargs>
+
+        <arg name="batch" opt="yes" type="string">
+
+          <argdesc>
+            Allow document store request to be batched with others
+          </argdesc>
+
+          <option value="ok">Enable</option>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Inserts a new document, or new version of an existing document
+      </description>
+
+      <request>
+        JSON of the new document, or updated version of the existed
+        document
+      </request>
+
+      <response>
+        JSON of the document ID and revision
+      </response>
+
+      <returncode code="201">
+        Document has been created successfully
+      </returncode>
+
+      <returncode code="202">
+        Document accepted for writing (batch mode)
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Current revision of the document for validation
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Deletes the document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the deleted revision
+      </response>
+
+      <returncode code="409">
+        Revision is missing, invalid or not the latest
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="COPY">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Revision to copy from
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="Destination" opt="no">
+
+          <httpheaderdesc>Destination document (and optional revision)</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Copies the document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the new document and revision
+      </response>
+
+      <returncode code="201">
+        Document has been copied and created successfully
+      </returncode>
+
+      <returncode code="409">
+        Conflict (target document already exists)
+      </returncode>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/doc/attachment" id="db-doc-attachment" xrefto="db-doc-attachment" class="dbdoc">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Gets the attachment of a document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Returns the document data
+      </response>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <queryargs>
+
+        <arg name="rev" opt="no" type="string">
+
+          <argdesc>
+            Current document revision
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="Content-Type" opt="no">
+
+          <httpheaderdesc>MIME type for the uploaded attachment</httpheaderdesc>
+
+        </httpheader>
+
+        <httpheader name="Content-Length" opt="no">
+
+          <httpheaderdesc>Length (bytes) of the attachment being uploaded</httpheaderdesc>
+
+        </httpheader>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Adds an attachment of a document
+      </description>
+
+      <request>
+        Raw document data
+      </request>
+
+      <response>
+        JSON document status
+      </response>
+
+      <returncode code="201">
+        Attachment has been accepted
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <queryargs>
+
+        <arg name="rev" opt="no" type="string">
+
+          <argdesc>
+            Revision of the document to be deleted
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Deletes an attachment of a document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON status
+      </response>
+
+      <returncode code="200">
+        Attachment deleted successfully
+      </returncode>
+
+      <returncode code="409">
+        Supplied revision is incorrect or missing
+      </returncode>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_local/local-doc" id="db-local-localdoc" xrefto="db-local-localdoc" class="localdb">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="revs" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of the revisions for the document
+          </argdesc>
+
+        </arg>
+
+        <arg name="revs_info" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of detailed revision information for the
+            document
+          </argdesc>
+
+          <option value="true">Includes the revisions</option>
+
+        </arg>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Specify the revision to return
+          </argdesc>
+
+          <option value="true">Includes the revisions</option>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns the latest revision of the non-replicated document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the returned document
+      </response>
+
+      <returncode code="400">
+        The format of the request or revision was invalid
+      </returncode>
+
+      <returncode code="404">
+        The specified document or revision cannot be found, or has been
+        deleted
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <description>
+        Inserts a new version of the non-replicated document
+      </description>
+
+      <request>
+        JSON of the document
+      </request>
+
+      <response>
+        JSON with the committed document information
+      </response>
+
+      <returncode code="201">
+        Document has been created successfully
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Current revision of the document for validation
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Deletes the non-replicated document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON with the deleted document information
+      </response>
+
+      <returncode code="409">
+        Supplied revision is incorrect or missing
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="COPY">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Revision to copy from
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="Destination" opt="no">
+
+          <httpheaderdesc>Destination document (and optional revision)</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Copies the non-replicated document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the copied document
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc" id="db-design-designdoc" xrefto="db-design-designdoc" class="design">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="revs" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of the revisions for the document
+          </argdesc>
+
+          <option value="true">Includes the revisions</option>
+
+        </arg>
+
+        <arg name="revs_info" opt="yes" type="boolean">
+
+          <argdesc>
+            Return a list of detailed revision information for the
+            document
+          </argdesc>
+
+          <option value="true">Includes the revisions</option>
+
+        </arg>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Specify the revision to return
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns the latest revision of the design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the existing design document
+      </response>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <description>
+        Creates or updates a design document
+      </description>
+
+      <request>
+        JSON of the design document
+      </request>
+
+      <response>
+        JSON status
+      </response>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Current revision of the document for validation
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Deletes the design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of deleted design document
+      </response>
+
+      <returncode code="409">
+        Supplied revision is incorrect or missing
+      </returncode>
+
+    </access>
+
+    <access admin="no" method="COPY">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Revision to copy from
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="Destination" opt="no">
+
+          <httpheaderdesc>Destination document (and optional revision)</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Copies the design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the copied document and revision
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/attachment" id="db-design-designdoc-attachment" xrefto="db-design-designdoc-attachment" class="design">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Gets an attachment of the design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Document content
+      </response>
+
+    </access>
+
+    <access admin="no" method="PUT">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Current revision of the document for validation
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Inserts an attachment to the design document
+      </description>
+
+      <request>
+        JSON of the design document
+      </request>
+
+      <response>
+        JSON status statement
+      </response>
+
+    </access>
+
+    <access admin="no" method="DELETE">
+
+      <queryargs>
+
+        <arg name="rev" opt="yes" type="string">
+
+          <argdesc>
+            Current revision of the document for validation
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <httpheaders>
+
+        <httpheader name="If-Match" opt="yes">
+
+          <httpheaderdesc>Current revision of the document for validation</httpheaderdesc>
+
+        </httpheader>
+
+      </httpheaders>
+
+      <description>
+        Deletes an attachment from the design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the deleted revision
+      </response>
+
+      <returncode code="409">
+        Supplied revision is incorrect or missing
+      </returncode>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_info" id="db-design-designdoc-info" xrefto="db-design-designdoc-info" class="design">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Returns information about the design document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the design document information
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_view/view-name" id="db-design-designdoc-view-viewname" xrefto="db-design-designdoc-view-viewname" class="design">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="key" opt="yes" type="string">
+
+          <argdesc>
+            Return only documents that match the specified key
+          </argdesc>
+
+        </arg>
+
+        <arg name="startkey" opt="yes" type="string">
+
+          <argdesc>
+            Return records starting with the specified key
+          </argdesc>
+
+        </arg>
+
+        <arg name="startkey_docid" opt="yes" type="string">
+
+          <argdesc>
+            Return records starting with the specified document ID
+          </argdesc>
+
+        </arg>
+
+        <arg name="endkey" opt="yes" type="string">
+
+          <argdesc>
+            Stop returning records when the specified key is reached
+          </argdesc>
+
+        </arg>
+
+        <arg name="endkey_docid" opt="yes" type="string">
+
+          <argdesc>
+            Stop returning records when the specified document ID is
+            reached
+          </argdesc>
+
+        </arg>
+
+        <arg name="limit" opt="yes" type="numeric">
+
+          <argdesc>
+            Limit the number of the returned documents to the specified
+            number
+          </argdesc>
+
+        </arg>
+
+        <arg name="stale" opt="yes" type="string" default="">
+
+          <argdesc>
+            Allow the results from a stale view to be used
+          </argdesc>
+
+          <option value="ok">Allow stale views</option>
+
+          <option value="update_after" iv="1.2">Allow stale view for access, trigger update of view after access</option>
+
+        </arg>
+
+        <arg name="descending" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Return the documents in descending by key order
+          </argdesc>
+
+        </arg>
+
+        <arg name="skip" opt="yes" type="numeric" default="0">
+
+          <argdesc>
+            Skip this number of records before starting to return the
+            results
+          </argdesc>
+
+        </arg>
+
+        <arg name="group" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Group the results using the reduce function to a group or
+            single row
+          </argdesc>
+
+        </arg>
+
+        <arg name="group_level" opt="yes" type="numeric">
+
+          <argdesc>
+            Specify the group level to be used
+          </argdesc>
+
+        </arg>
+
+        <arg name="reduce" opt="yes" type="boolean" default="true">
+
+          <argdesc>
+            Use the reduction function
+          </argdesc>
+
+        </arg>
+
+        <arg name="include_docs" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Include the full content of the documents in the return
+          </argdesc>
+
+        </arg>
+
+        <arg name="inclusive_end" opt="yes" type="boolean" default="true">
+
+          <argdesc>
+            Specifies whether the specified end key should be included
+            in the result
+          </argdesc>
+
+        </arg>
+
+        <arg name="update_seq" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Include the update sequence in the generated results
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns results of the view
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        JSON of the documents returned by the view
+      </response>
+
+    </access>
+
+    <access admin="no" method="POST">
+
+      <queryargs>
+
+        <arg name="key" opt="yes" type="string">
+
+          <argdesc>
+            Return only documents that match the specified key
+          </argdesc>
+
+        </arg>
+
+        <arg name="startkey" opt="yes" type="string">
+
+          <argdesc>
+            Return records starting with the specified key
+          </argdesc>
+
+        </arg>
+
+        <arg name="startkey_docid" opt="yes" type="string">
+
+          <argdesc>
+            Return records starting with the specified document ID
+          </argdesc>
+
+        </arg>
+
+        <arg name="endkey" opt="yes" type="string">
+
+          <argdesc>
+            Stop returning records when the specified key is reached
+          </argdesc>
+
+        </arg>
+
+        <arg name="endkey_docid" opt="yes" type="string">
+
+          <argdesc>
+            Stop returning records when the specified document ID is
+            reached
+          </argdesc>
+
+        </arg>
+
+        <arg name="limit" opt="yes" type="numeric">
+
+          <argdesc>
+            Limit the number of the returned documents to the specified
+            number
+          </argdesc>
+
+        </arg>
+
+        <arg name="stale" opt="yes" type="string" default="">
+
+          <argdesc>
+            Allow the results from a stale view to be used
+          </argdesc>
+
+          <option value="ok">Allow stale views</option>
+
+        </arg>
+
+        <arg name="descending" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Return the documents in descending by key order
+          </argdesc>
+
+        </arg>
+
+        <arg name="skip" opt="yes" type="numeric" default="0">
+
+          <argdesc>
+            Skip this number of records before starting to return the
+            results
+          </argdesc>
+
+        </arg>
+
+        <arg name="group" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Group the results using the reduce function to a group or
+            single row
+          </argdesc>
+
+        </arg>
+
+        <arg name="group_level" opt="yes" type="numeric">
+
+          <argdesc>
+            Specify the group level to be used
+          </argdesc>
+
+        </arg>
+
+        <arg name="reduce" opt="yes" type="boolean" default="true">
+
+          <argdesc>
+            Use the reduction function
+          </argdesc>
+
+        </arg>
+
+        <arg name="include_docs" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Include the full content of the documents in the return
+          </argdesc>
+
+        </arg>
+
+        <arg name="inclusive_end" opt="yes" type="boolean" default="true">
+
+          <argdesc>
+            Specifies whether the specified end key should be included
+            in the result
+          </argdesc>
+
+        </arg>
+
+        <arg name="update_seq" opt="yes" type="boolean" default="false">
+
+          <argdesc>
+            Include the update sequence in the generated results
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Returns certain rows from the view
+      </description>
+
+      <request>
+        List of keys to be returned from specified view
+      </request>
+
+      <response>
+        JSON of the documents returned by the view
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_show/show-name" id="db-design-designdoc-show-showname" xrefto="db-design-designdoc-show-showname" class="design">
+
+    <access admin="no" method="GET">
+
+      <queryargs>
+
+        <arg name="format" opt="yes" type="string">
+
+          <argdesc>
+            Format of the returned information
+          </argdesc>
+
+        </arg>
+
+        <arg name="details" opt="yes" type="string">
+
+          <argdesc>
+            Indicates whether details should be included
+          </argdesc>
+
+        </arg>
+
+      </queryargs>
+
+      <description>
+        Invokes the show handler without a document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Returns the result of the show
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_show/show-name/doc" id="db-design-designdoc-show-showname-doc" xrefto="db-design-designdoc-show-showname-doc" class="design">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Invokes the show handler for the given document
+      </description>
+
+      <request>
+        None
+      </request>
+
+      <response>
+        Returns the show for the given document
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_list/list-name/view-name" id="db-design-designdoc-list-listname-viewname" xrefto="db-design-designdoc-list-listname-viewname" class="design">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Invokes the list handler to translate the given view results
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+    <access admin="no" method="POST">
+
+      <description>
+        Invokes the list handler to translate the given view results for
+        certain documents
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_list/list-name/other-design-doc/view-name" id="db-design-designdoc-list-listname-otherdesigndoc-viewname" xrefto="db-design-designdoc-list-listname-otherdesigndoc-viewname" class="design">
+
+    <access admin="no" method="GET">
+
+      <description>
+        Invokes the list handler to translate the given view results
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+    <access admin="no" method="POST">
+
+      <description>
+        Invokes the list handler to translate the given view results for
+        certain documents
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_update/update-name/doc"
+      id="db-design-designdoc-update-updatename-doc"
+      xrefto="db-design-designdoc-update-updatename-doc" class="design">
+
+    <access admin="no" method="PUT">
+
+      <description>
+        Invokes the update handler with a specific document ID
+      </description>
+
+      <request>
+        Document update information
+      </request>
+
+      <response>
+        Updated document
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_update/update-name" id="db-design-designdoc-update-updatename" xrefto="db-design-designdoc-update-updatename" class="design">
+
+    <access admin="no" method="POST">
+
+      <description>
+        Invokes the update handler without a document ID
+      </description>
+
+      <request>
+        Document update information
+      </request>
+
+      <response>
+        Updated document
+      </response>
+
+    </access>
+
+  </urlapi>
+
+  <urlapi path="/db/_design/design-doc/_rewrite/rewrite-name/anything" id="db-design-designdoc-rewrite-rewritename-anything" xrefto="db-design-designdoc-rewrite-rewritename-anything" class="design">
+
+    <access admin="no" method="ALL">
+
+      <description>
+        Invokes the URL rewrite handler and processes the request after
+        rewriting
+      </description>
+
+      <request>
+        TBC
+      </request>
+
+      <response>
+        TBC
+      </response>
+
+    </access>
+
+  </urlapi>
+
+</urlapilist>

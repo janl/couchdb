@@ -1,0 +1,8 @@
+<!ENTITY amp         "&#38;">
+<!ENTITY ellipsis    "&#x2026;">
+<!ENTITY mdash       "&#x2014;">
+<!ENTITY ndash       "&#x2013;">
+<!ENTITY dash        "&#x2010;">
+<!ENTITY nbsp        "&#x00A0;">
+<!ENTITY raquo       "&#x00BB;">
+<!ENTITY laquo       "&#x00AB;">

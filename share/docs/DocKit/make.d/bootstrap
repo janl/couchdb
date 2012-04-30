@@ -1,0 +1,59 @@
+# -*- makefile -*-
+
+include $(COUCHDB_MAKED)/vars-couchdocs
+
+DEFAULT:
+
+depend:
+	@set -e; \
+	for dir in $(SUBDIRS); \
+	do \
+           echo Rebuilding dependencies in $$dir; \
+	   echo >Makefile.depends; \
+           $(MAKE) --directory $$dir depend; \
+	done
+
+reformat:
+	@set -e; \
+	for dir in $(SUBDIRS); \
+	do \
+           echo Reformatting XML in $$dir;\
+           $(MAKE) --directory $$dir reformat; \
+	done
+
+clean::
+	@set -e; \
+	for dir in $(SUBDIRS); \
+	do \
+           echo Cleaning $$dir;\
+           $(MAKE) --directory $$dir clean; \
+	done
+
+ready:
+	@set -e; \
+	for dir in $(SUBDIRS); \
+	do \
+           echo Validating $$dir;\
+           $(MAKE) --directory $$dir ready; \
+	done
+
+validate:
+	@set -e; \
+	for dir in $(SUBDIRS); \
+	do \
+           echo Validating $$dir;\
+           $(MAKE) --directory $$dir validate; \
+	done
+
+docs:
+	@set -e; \
+	for dir in $(SUBDIRS); \
+	do \
+           echo Building docs in $$dir;\
+           $(MAKE) --directory $$dir docs; \
+	done
+
+new-project:
+	set -e; \
+	echo Creating $(NEW_PROJECT); \
+	$(NEW_PROJECT) $(COUCHDB_ROOT) $(TARGETDIR) $(BASEDOC) $(VERSION) $(TYPE)

@@ -1,0 +1,67 @@
+# -*-makefile-*-
+
+XML_CATALOG_FILES = $(COUCHDB_TOOLS)/catalog.xml
+COUCHDB_BIN       = $(COUCHDB_TOOLS)/bin
+XMLFORMAT_CONF   ?= $(COUCHDB_BIN)/xmlformat-docbook.conf
+
+
+ABSHL_PATH             = $(shell cd $(COUCHDB_XSLD)/docbook-xsl/highlighting/ && pwd)
+
+XSLTPROC               = XML_CATALOG_FILES="$(XML_CATALOG_FILES)" xsltproc --xinclude --novalid
+XMLLINT                = XML_CATALOG_FILES="$(XML_CATALOG_FILES)" xmllint
+XALAN_JAR              = $(COUCHDB_TOOLS)/xalan/xalan.jar:$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:xml-apis.jar:$(COUCHDB_TOOLS)/xalan/serializer.jar
+SUBXALAN_JAR           = ../$(COUCHDB_TOOLS)/xalan/xalan.jar:../$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:../$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:xml-apis.jar:../$(COUCHDB_TOOLS)/xalan/serializer.jar
+XALAN_EXTENSIONS       = $(COUCHDB_XSLD)/docbook-xsl/extensions/xalan27.jar
+SUBXALAN_EXTENSIONS    = ../$(COUCHDB_XSLD)/docbook-xsl/extensions/xalan27.jar
+XSLTHL_JAR             = $(COUCHDB_TOOLS)/xalan/xslthl.jar
+SUBXSLTHL_JAR          = ../$(COUCHDB_TOOLS)/xalan/xslthl.jar
+JAVA_CP                = $(XALAN_JAR):$(XALAN_EXTENSIONS):$(XSLTHL_JAR)
+SUBJAVA_CP             = $(SUBXALAN_JAR):$(SUBXALAN_EXTENSIONS):$(XSLTHL_JAR)
+XALAN                  = XML_CATALOG_FILES="$(XML_CATALOG_FILES)" java -cp $(JAVA_CP) -Dxslthl.config="file:///$(ABSHL_PATH)/xslthl-config.xml" org.apache.xalan.xslt.Process 
+SUBXALAN               = XML_CATALOG_FILES="../$(XML_CATALOG_FILES)" java -cp $(SUBJAVA_CP) -Dxslthl.config="file:///$(ABSHL_PATH)/xslthl-config.xml" org.apache.xalan.xslt.Process 
+CLEAN_END_SPACE        = perl -pi -e 's/[ \t]+$$//'
+XMLFORMAT              = $(COUCHDB_BIN)/xmlformat.pl -f $(XMLFORMAT_CONF)
+NEW_PROJECT            = $(COUCHDB_BIN)/new-project.sh
+NEW_FROM_TEMPLATE      = $(COUCHDB_BIN)/new-from-template.sh
+METAPARSE              = $(COUCHDB_BIN)/metaparse.pl
+METAVALIDATE           = $(COUCHDB_BIN)/metavalidate.pl
+DEPENDPARSE            = $(COUCHDB_BIN)/dependparse.pl
+FINALPARSE             = $(COUCHDB_BIN)/finalparse.pl
+COUCHDOCS_MODULE       = $(COUCHDB_BIN)/CouchDocs.pm
+UPDATE_IMAGE_SIZE      = $(COUCHDB_BIN)/update-image-size.pl
+DBCHECK                = $(COUCHDB_BIN)/dbcheck.pl
+VERSION_COPY           = $(COUCHDB_BIN)/versionparse.pl
+META_DOCROOT           = $(COUCHDB_ROOT)/metadocs/
+COUCHDB_XSLD           = $(COUCHDB_TOOLS)/xsl.d
+XSLT_READY             = $(COUCHDB_XSLD)/ready.xsl
+XSLT_READY_ONLINE      = $(COUCHDB_XSLD)/ready-online.xsl
+XSLT_CORE_DEPEND       = $(COUCHDB_XSLD)/extensions.xsl
+XSLT_HTML              = $(COUCHDB_XSLD)/single-html.xsl
+XSLT_HTMLC             = $(COUCHDB_XSLD)/chapter-html.xsl
+XSLT_HTMLC_DEPEND      = $(XSLT_CORE_DEPEND)
+XSLT_HTMLS             = $(COUCHDB_XSLD)/section-html.xsl
+XSLT_HTMLS_DEPEND      = $(XSLT_CORE_DEPEND)
+XSLT_FO	               = $(COUCHDB_XSLD)/fo.xsl
+XSLT_FO_DEPEND         = $(XSLT_CORE_DEPEND)
+XSLT_MAN               = $(COUCHDB_XSLD)/man.xsl
+XSLT_EPUB              = $(COUCHDB_XSLD)/epub.xsl
+XSLT_EPUB_DEPEND       = $(XSLT_CORE_DEPEND)
+
+FINALIZE_EPUB          = $(COUCHDB_BIN)/finalize-epub.pl
+
+CSS_HTML               = $(COUCHDB_XSLD)/html-css/html.css
+CSS_HTML_IMGS          = $(COUCHDB_XSLD)/html-css/images/*
+CSS_EPUB_HTML          = $(COUCHDB_XSLD)/epub-css/epub.css
+CSS_EPUB_HTML_IMGS     = $(COUCHDB_XSLD)/html-css/images/*
+
+FOP_CONFIG             = $(COUCHDB_XSLD)/fop.xml
+
+BUILD_FORMATS          = html html-dir pdf epub html-section
+
+BUILD_TYPE             = standard
+BUILD_SRC              = ./
+
+# Version should be explicit for a version build, for anything else, we output
+# everything
+
+BASE_VERSION           = 0.0-999.999.999

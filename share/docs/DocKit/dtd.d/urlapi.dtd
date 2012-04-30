@@ -1,0 +1,115 @@
+<!-- DTD for the URL API -->
+
+<!-- Container -->
+
+<!ELEMENT urlapilist (#PCDATA | urlapi | defaultreturncodes)*>
+
+<!-- Container for defaultreturncodes -->
+
+<!ELEMENT defaultreturncodes (#PCDATA | returncode)*>
+
+<!-- Container for individual entry 
+
+Individual API entry can be tracked by version: 
+
+iv = in version
+ov = out version
+dv = deprecated
+rv = removed
+
+Additional attributes classify entry: 
+
+id     = ID for path
+class  = Class grouping
+path   = URL path
+xrefto = Cross reference
+
+-->
+
+<!ELEMENT urlapi (#PCDATA | access)*>
+<!ATTLIST urlapi id CDATA #REQUIRED>
+<!ATTLIST urlapi class CDATA #REQUIRED>
+<!ATTLIST urlapi dv CDATA #IMPLIED>
+<!ATTLIST urlapi iv CDATA #IMPLIED>
+<!ATTLIST urlapi ov CDATA #IMPLIED>
+<!ATTLIST urlapi rv CDATA #IMPLIED>
+<!ATTLIST urlapi path CDATA #REQUIRED>
+<!ATTLIST urlapi xrefto CDATA #REQUIRED>
+
+<!-- Standard descriptive data -->
+
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT request (#PCDATA)>
+<!ELEMENT response (#PCDATA)>
+
+<!-- Access covers an individual method 
+
+Tracking is by same version combination
+
+method  = HTTP method
+xrefto  = Separate cross reference
+
+-->
+
+<!ELEMENT access (queryargs*, httpheaders* , description? , request? , response? , returncode*)>
+<!ATTLIST access dv CDATA #IMPLIED>
+<!ATTLIST access iv CDATA #IMPLIED>
+<!ATTLIST access method (GET|PUT|DELETE|POST|COPY|HEAD|ALL) #REQUIRED>
+<!ATTLIST access ov CDATA #IMPLIED>
+<!ATTLIST access rv CDATA #IMPLIED>
+<!ATTLIST access xrefto CDATA #IMPLIED>
+<!ATTLIST access admin (yes|no) #REQUIRED>
+
+<!-- Query arguments -->
+
+<!ELEMENT queryargs (#PCDATA | arg)*>
+<!ATTLIST queryargs dv CDATA #IMPLIED>
+<!ATTLIST queryargs iv CDATA #IMPLIED>
+<!ATTLIST queryargs ov CDATA #IMPLIED>
+<!ATTLIST queryargs rv CDATA #IMPLIED>
+
+<!-- Track the individual arguments for a given URL method
+
+Arguments have value types, min/max and default values
+
+Descriptions (argdesc) describe the entire argument
+
+Options describe one (or more) supported options
+
+-->
+
+<!ELEMENT arg (argdesc , option*)>
+<!ATTLIST arg default CDATA #IMPLIED>
+<!ATTLIST arg max CDATA #IMPLIED>
+<!ATTLIST arg min CDATA #IMPLIED>
+<!ATTLIST arg name CDATA #REQUIRED>
+<!ATTLIST arg opt (yes | no) #REQUIRED>
+<!ATTLIST arg qty CDATA #IMPLIED>
+<!ATTLIST arg type (string | numeric | boolean) #REQUIRED>
+<!ELEMENT argdesc (#PCDATA)>
+<!ELEMENT option (#PCDATA)>
+<!ATTLIST option value CDATA #IMPLIED>
+<!ATTLIST option dv CDATA #IMPLIED>
+<!ATTLIST option iv CDATA #IMPLIED>
+<!ATTLIST option ov CDATA #IMPLIED>
+<!ATTLIST option rv CDATA #IMPLIED>
+
+<!-- HTTP headers track any HTTP protocol headers supported
+in the request. These are tracked by version, and support description
+and optional values (as per query arguments -->
+
+<!ELEMENT httpheader (httpheaderdesc , option*)>
+<!ELEMENT httpheaderdesc (#PCDATA)>
+<!ELEMENT httpheaders (#PCDATA | httpheader)*>
+<!ATTLIST httpheader name CDATA #REQUIRED>
+<!ATTLIST httpheader opt (yes | no) #REQUIRED>
+<!ATTLIST httpheaders dv CDATA #IMPLIED>
+<!ATTLIST httpheaders iv CDATA #IMPLIED>
+<!ATTLIST httpheaders ov CDATA #IMPLIED>
+<!ATTLIST httpheaders rv CDATA #IMPLIED>
+
+<!-- HTTP Return codes and their corresponding meaning -->
+
+<!ELEMENT returncode (#PCDATA)>
+<!ATTLIST returncode code CDATA #REQUIRED>
+

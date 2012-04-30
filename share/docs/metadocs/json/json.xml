@@ -1,0 +1,1060 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jsonstructures SYSTEM "couchdocs:json-objects.dtd">
+<jsonstructures>
+
+  <structure id="document">
+
+    <description>
+      CouchDB Document
+    </description>
+
+    <field id="_id" optional="yes" type="string">
+
+      <fielddesc>
+        Document ID
+      </fielddesc>
+
+    </field>
+
+    <field id="_rev" optional="yes" type="string">
+
+      <fielddesc>
+        Revision ID (when updating an existing document)
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <structure id="document_with_attachments">
+
+    <description>
+      Document with Attachments
+    </description>
+
+    <merge id="document"/>
+
+    <field id="_attachments" optional="yes" type="object">
+
+      <merge id="attachment"/>
+
+    </field>
+
+  </structure>
+
+  <structure id="returneddocument_with_attachments">
+
+    <description>
+      Returned Document with Attachments
+    </description>
+
+    <merge id="document"/>
+
+    <field id="_attachments" optional="yes" type="object">
+
+      <merge id="returnedattachment"/>
+
+    </field>
+
+  </structure>
+
+  <substructure id="returnedattachment">
+
+    <description>
+      Document Attachment
+    </description>
+
+    <field id="filename" optional="no" type="object">
+
+      <fielddesc>
+        Attachment file name
+      </fielddesc>
+
+      <merge id="returnedattachmentinfo"/>
+
+    </field>
+
+  </substructure>
+
+  <substructure id="attachment">
+
+    <description>
+      Document Attachment
+    </description>
+
+    <field id="filename" optional="no" type="object">
+
+      <fielddesc>
+        Attachment file name
+      </fielddesc>
+
+      <merge id="attachmentinfo"/>
+
+    </field>
+
+  </substructure>
+
+  <substructure id="attachmentinfo">
+
+    <description>
+      Attachment information
+    </description>
+
+    <field id="content_type" optional="no" type="string">
+
+      <fielddesc>
+        MIME Content type string
+      </fielddesc>
+
+    </field>
+
+    <field id="data" optional="no" type="string">
+
+      <fielddesc>
+        File attachment content, Base64 encoded
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <substructure id="returnedattachmentinfo">
+
+    <description>
+      Attachment
+    </description>
+
+    <field id="stub" optional="no" type="boolean">
+
+      <fielddesc>
+        Indicates whether the attachment is a stub
+      </fielddesc>
+
+    </field>
+
+    <field id="content_type" optional="no" type="string">
+
+      <fielddesc>
+        MIME Content type string
+      </fielddesc>
+
+    </field>
+
+    <field id="length" optional="no" type="numeric">
+
+      <fielddesc>
+        Length (bytes) of the attachment data
+      </fielddesc>
+
+    </field>
+
+    <field id="revpos" optional="no" type="numeric">
+
+      <fielddesc>
+        Revision where this attachment exists
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <structure id="document_with_revs">
+
+    <description>
+      Returned CouchDB Document with Revision Info
+    </description>
+
+    <merge id="document"/>
+
+    <field id="_revisions" optional="no" type="object">
+
+      <merge id="revisions"/>
+
+    </field>
+
+  </structure>
+
+  <structure id="document_with_revs_info">
+
+    <description>
+      Returned CouchDB Document with Detailed Revision Info
+    </description>
+
+    <merge id="document"/>
+
+    <field id="_revs_info" optional="no" type="array">
+
+      <merge id="revs_info"/>
+
+    </field>
+
+  </structure>
+
+  <structure id="activetasks">
+
+    <description>
+      List of Active Tasks
+    </description>
+
+    <field id="tasks" optional="no" type="array">
+
+      <fielddesc>
+        List of active tasks
+      </fielddesc>
+
+      <merge id="activetaskentry"/>
+
+    </field>
+
+  </structure>
+
+  <substructure id="activetaskentry">
+
+    <description>
+      Active Task
+    </description>
+
+    <field id="pid" optional="no" type="numeric">
+
+      <fielddesc>
+        Process ID
+      </fielddesc>
+
+    </field>
+
+    <field id="status" optional="no" type="string">
+
+      <fielddesc>
+        Task status message
+      </fielddesc>
+
+    </field>
+
+    <field id="task" optional="no" type="string">
+
+      <fielddesc>
+        Task name
+      </fielddesc>
+
+    </field>
+
+    <field id="type" optional="no" type="string">
+
+      <fielddesc>
+        Operation Type
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <substructure id="revisions">
+
+    <description>
+      CouchDB Document Revisions
+    </description>
+
+    <field id="ids" optional="no" type="array">
+
+      <fielddesc>
+        Array of valid revision IDs, in reverse order (latest first)
+      </fielddesc>
+
+    </field>
+
+    <field id="start" optional="no" type="numeric">
+
+      <fielddesc>
+        Prefix number for the latest revision
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <substructure id="revs_info">
+
+    <description>
+      CouchDB Document Extended Revision Info
+    </description>
+
+    <field id="status" optional="no" type="string">
+
+      <fielddesc>
+        Status of the revision
+      </fielddesc>
+
+    </field>
+
+    <field id="rev" optional="no" type="string">
+
+      <fielddesc>
+        Full revision string
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <structure id="design-doc">
+
+    <description>
+      Design Document
+    </description>
+
+    <field id="_id" optional="no" type="string">
+
+      <fielddesc>
+        Design Document ID
+      </fielddesc>
+
+    </field>
+
+    <field id="_rev" optional="no" type="string">
+
+      <fielddesc>
+        Design Document Revision
+      </fielddesc>
+
+    </field>
+
+    <field id="views" optional="no" type="object">
+
+      <fielddesc>
+        One or more View definitions
+      </fielddesc>
+
+      <merge id="view"/>
+
+    </field>
+
+  </structure>
+
+  <substructure id="view">
+
+    <description>
+      View
+    </description>
+
+    <field id="viewname" optional="no" type="string">
+
+      <fielddesc>
+        View Name
+      </fielddesc>
+
+      <merge id="viewdef"/>
+
+    </field>
+
+  </substructure>
+
+  <substructure id="viewdef">
+
+    <description>
+      View Definition
+    </description>
+
+    <field id="map" optional="no" type="function">
+
+      <fielddesc>
+        Map Function for View
+      </fielddesc>
+
+    </field>
+
+    <field id="reduce" optional="yes" type="function">
+
+      <fielddesc>
+        Reduce Function for View
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <structure id="design-doc_info">
+
+    <description>
+      Design Document Information
+    </description>
+
+    <field id="view_index" optional="no" type="object">
+
+      <merge id="design-doc_info_view_index"/>
+
+    </field>
+
+    <field id="name" optional="no" type="string">
+
+      <fielddesc>
+        Name/ID of Design Document
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <structure id="design-doc_info-spatial">
+
+    <description>
+      Design Document spatial index Information
+    </description>
+
+    <field id="spatial_index" optional="no" type="object">
+
+      <merge id="design-doc_info_view_index"/>
+
+    </field>
+
+    <field id="name" optional="no" type="string">
+
+      <fielddesc>
+        Name/ID of Design Document
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <substructure id="design-doc_info_view_index">
+
+    <description>
+      View Index
+    </description>
+
+    <field id="compact_running" optional="no" type="boolean">
+
+      <fielddesc>
+        Indicates whether a compaction routine is currently running on
+        the view
+      </fielddesc>
+
+    </field>
+
+    <field id="updater_running" optional="no" type="boolean">
+
+      <fielddesc>
+        Indicates if the view is currently being updated
+      </fielddesc>
+
+    </field>
+
+    <field id="language" optional="no" type="string">
+
+      <fielddesc>
+        Language for the defined views
+      </fielddesc>
+
+    </field>
+
+    <field id="purge_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        The purge sequence that has been processed
+      </fielddesc>
+
+    </field>
+
+    <field id="waiting_commit" optional="no" type="boolean">
+
+      <fielddesc>
+        Indicates if there are outstanding commits to the underlying
+        database that need to processed
+      </fielddesc>
+
+    </field>
+
+    <field id="waiting_clients" optional="no" type="numeric">
+
+      <fielddesc>
+        Number of clients waiting on views from this design document
+      </fielddesc>
+
+    </field>
+
+    <field id="signature" optional="no" type="string">
+
+      <fielddesc>
+        MD5 signature of the views for the design document
+      </fielddesc>
+
+    </field>
+
+    <field id="update_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        The update sequence of the corresponding database that has been
+        indexed
+      </fielddesc>
+
+    </field>
+
+    <field id="disk_size" optional="no" type="numeric">
+
+      <fielddesc>
+        Size in bytes of the view as stored on disk
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <structure id="db-info">
+
+    <description>
+      CouchDB database information object
+    </description>
+
+    <field id="compact_running" optional="no" type="boolean">
+
+      <fielddesc>
+        Set to true if the database compaction routine is operating on
+        this database.
+      </fielddesc>
+
+    </field>
+
+    <field id="committed_update_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        The number of committed update.
+      </fielddesc>
+
+    </field>
+
+    <field id="doc_count" optional="no" type="numeric">
+
+      <fielddesc>
+        A count of the documents in the specified database.
+      </fielddesc>
+
+    </field>
+
+    <field id="db_name" optional="no" type="string">
+
+      <fielddesc>
+        The name of the database.
+      </fielddesc>
+
+    </field>
+
+    <field id="doc_del_count" optional="no" type="numeric">
+
+      <fielddesc>
+        Number of deleted documents
+      </fielddesc>
+
+    </field>
+
+    <field id="disk_format_version" optional="no" type="numeric">
+
+      <fielddesc>
+        The version of the physical format used for the data when it is
+        stored on disk.
+      </fielddesc>
+
+    </field>
+
+    <field id="disk_size" optional="no" type="numeric">
+
+      <fielddesc>
+        Size in bytes of the data as stored on the disk. Views indexes
+        are not included in the calculation.
+      </fielddesc>
+
+    </field>
+
+    <field id="instance_start_time" optional="no" type="numeric">
+
+      <fielddesc>
+        Timestamp of when the database was created, expressed in
+        milliseconds since the epoch.
+      </fielddesc>
+
+    </field>
+
+    <field id="purge_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        The number of purge operations on the database.
+      </fielddesc>
+
+    </field>
+
+    <field id="update_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        The current number of updates to the database.
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <structure id="changes">
+
+    <description>
+      Changes information for a database
+    </description>
+
+    <field id="last_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        Last change sequence number
+      </fielddesc>
+
+    </field>
+
+    <field id="results" optional="no" type="array">
+
+      <merge id="changes-results"/>
+
+    </field>
+
+  </structure>
+
+  <substructure id="changes-results">
+
+    <description>
+      Changes made to a database
+    </description>
+
+    <field id="seq" optional="no" type="numeric">
+
+      <fielddesc>
+        Update sequence number
+      </fielddesc>
+
+    </field>
+
+    <field id="id" optional="no" type="string">
+
+      <fielddesc>
+        Document ID
+      </fielddesc>
+
+    </field>
+
+    <field id="changes" optional="no" type="array">
+
+      <fielddesc>
+        List of changes, field-by-field, for this document
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <structure id="all-docs">
+
+    <description>
+      All Database Documents
+    </description>
+
+    <field id="total_rows" optional="no" type="numeric">
+
+      <fielddesc>
+        Number of documents in the database/view
+      </fielddesc>
+
+    </field>
+
+    <field id="offset" optional="no" type="numeric">
+
+      <fielddesc>
+        Offset where the document list started
+      </fielddesc>
+
+    </field>
+
+    <field id="update_seq" optional="yes" type="numeric">
+
+      <fielddesc>
+        Current update sequence for the database
+      </fielddesc>
+
+    </field>
+
+    <field id="rows" optional="no" type="array">
+
+      <fielddesc>
+        Array of document object
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <structure id="replication">
+
+    <description>
+      Replication Settings
+    </description>
+
+    <field id="source" optional="no" type="string">
+
+      <fielddesc>
+        Source database name or URL
+      </fielddesc>
+
+    </field>
+
+    <field id="target" optional="no" type="string">
+
+      <fielddesc>
+        Target database name or URL
+      </fielddesc>
+
+    </field>
+
+    <field id="create_target" optional="yes" type="string">
+
+      <fielddesc>
+        Creates the target database
+      </fielddesc>
+
+    </field>
+
+    <field id="continuous" optional="yes" type="string">
+
+      <fielddesc>
+        Configure the replication to be continuous
+      </fielddesc>
+
+    </field>
+
+    <field id="cancel" optional="yes" type="string">
+
+      <fielddesc>
+        Cancels the replication
+      </fielddesc>
+
+    </field>
+
+    <field id="doc_ids" optional="yes" type="array">
+
+      <fielddesc>
+        Array of document IDs to be synchronized
+      </fielddesc>
+
+    </field>
+
+    <field id="proxy" optional="yes" type="string">
+
+      <fielddesc>
+        Address of a proxy server through which replication should occur
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <structure id="replication-status">
+
+    <description>
+      Replication Status
+    </description>
+
+    <field id="ok" optional="no" type="boolean">
+
+      <fielddesc>
+        Replication status
+      </fielddesc>
+
+    </field>
+
+    <field id="history" optional="no" type="array">
+
+      <fielddesc>
+        History of replication operations
+      </fielddesc>
+
+      <merge id="replication-status-history"/>
+
+      <fielddesc>
+        List of replication operations
+      </fielddesc>
+
+    </field>
+
+    <field id="session_id" optional="no" type="string">
+
+      <fielddesc>
+        Unique session ID
+      </fielddesc>
+
+    </field>
+
+    <field id="source_last_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        Last sequence number read from source database
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <substructure id="replication-status-history">
+
+    <description>
+      Replication History
+    </description>
+
+    <field id="docs_read" optional="no" type="numeric">
+
+      <fielddesc>
+        Number of documents read
+      </fielddesc>
+
+    </field>
+
+    <field id="session_id" optional="no" type="string">
+
+      <fielddesc>
+        Session ID for this replication operation
+      </fielddesc>
+
+    </field>
+
+    <field id="recorded_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        Last recorded sequence number
+      </fielddesc>
+
+    </field>
+
+    <field id="end_last_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        Last sequence number in changes stream
+      </fielddesc>
+
+    </field>
+
+    <field id="doc_write_failures" optional="no"
+            type="numeric">
+
+      <fielddesc>
+        Number of document write failures
+      </fielddesc>
+
+    </field>
+
+    <field id="start_time" optional="no" type="string">
+
+      <fielddesc>
+        Date/Time replication operation started
+      </fielddesc>
+
+    </field>
+
+    <field id="start_last_seq" optional="no" type="numeric">
+
+      <fielddesc>
+        First sequence number in changes stream
+      </fielddesc>
+
+    </field>
+
+    <field id="end_time" optional="no" type="string">
+
+      <fielddesc>
+        Date/Time replication operation completed
+      </fielddesc>
+
+    </field>
+
+    <field id="missing_checked" optional="no"
+            type="numeric">
+
+      <fielddesc>
+        Number of missing documents checked
+      </fielddesc>
+
+    </field>
+
+    <field id="docs_written" optional="no" type="numeric">
+
+      <fielddesc>
+        Number of documents written to target
+      </fielddesc>
+
+    </field>
+
+    <field id="missing_found" optional="no" type="numeric">
+
+      <fielddesc>
+        Number of missing documents found
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <structure id="bulkdocs">
+
+    <description>
+      Bulk Documents
+    </description>
+
+    <field id="all_or_nothing" optional="yes" type="boolean">
+
+      <fielddesc>
+        Sets the database commit mode to use all-or-nothing semantics
+      </fielddesc>
+
+    </field>
+
+    <field id="docs" optional="no" type="array">
+
+      <fielddesc>
+        Array of documents
+      </fielddesc>
+
+      <merge id="bulkdocs_doc"/>
+
+    </field>
+
+  </structure>
+
+  <substructure id="bulkdocs_doc">
+
+    <description>
+      Bulk Documents Document
+    </description>
+
+    <merge id="document"/>
+
+    <field id="_deleted" optional="yes" type="boolean">
+
+      <fielddesc>
+        Whether the document should be deleted
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+  <structure id="bulkdocsreturn">
+
+    <description>
+      Bulk Document Response
+    </description>
+
+    <field id="docs" optional="no" type="array">
+
+      <fielddesc>
+        Array of document IDs and Revisions
+      </fielddesc>
+
+      <merge id="bulkdocsreturn_doc"></merge>
+
+    </field>
+
+  </structure>
+
+  <substructure id="bulkdocsreturn_doc">
+
+    <description>
+      Bulk Docs Returned Documents
+    </description>
+
+    <merge id="jsonerror"/>
+
+  </substructure>
+
+  <structure id="jsonerror">
+
+    <description>
+      CouchDB Error Status
+    </description>
+
+    <field id="id" optional="no" type="string">
+
+      <fielddesc>
+        Document ID
+      </fielddesc>
+
+    </field>
+
+    <field id="error" optional="no" type="string">
+
+      <fielddesc>
+        Error type
+      </fielddesc>
+
+    </field>
+
+    <field id="reason" optional="no" type="string">
+
+      <fielddesc>
+        Error string with extended reason
+      </fielddesc>
+
+    </field>
+
+  </structure>
+
+  <structure id="security">
+
+    <description>
+      Security Object
+    </description>
+
+    <field id="admins" optional="no" type="object">
+
+      <merge id="securityadmins"/>
+
+    </field>
+
+    <field id="readers" optional="no" type="object">
+
+      <merge id="securityreaders"/>
+
+    </field>
+
+  </structure>
+
+  <substructure id="securityadmins">
+
+    <description>
+      Roles/Users with admin privileges
+    </description>
+
+    <merge id="securityobjectarrays"></merge>
+
+  </substructure>
+
+  <substructure id="securityreaders">
+
+    <description>
+      Roles/Users with reader privileges
+    </description>
+
+    <merge id="securityobjectarrays"></merge>
+
+  </substructure>
+
+  <substructure id="securityobjectarrays">
+
+    <field id="users" optional="no" type="array">
+
+      <fielddesc>
+        List of users with parent privilege
+      </fielddesc>
+
+    </field>
+
+    <field id="roles" optional="no" type="array">
+
+      <fielddesc>
+        List of roles with parent privilege
+      </fielddesc>
+
+    </field>
+
+  </substructure>
+
+</jsonstructures>

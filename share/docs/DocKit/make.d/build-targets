@@ -1,0 +1,114 @@
+# -*-makefile-*-
+
+# HTML
+
+%.html: %-ready.xml $(XSLT_HTML)
+	$(XALAN) \
+		-out $@.tmp \
+		-in $< \
+		-xsl $(XSLT_HTML) \
+		-param html.stylesheet $(CSS_HTML) 
+	$(UPDATE_IMAGE_SIZE) --fixhtml $@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: %.epubfiles
+
+# EPUB is basically HTML embedded into a Zip file with a specific layout
+# First we will build the collection of files
+
+%.epubfiles: %-ready.xml $(XSLT_EPUB) $(XSLT_EPUB_DEPEND) $(FINALIZE_EPUB) $(EPUB_ICON) $(CSS_EPUB_HTML) $(UPDATE_IMAGE_SIZE)
+	-rm -rf $@-tmp $@
+	mkdir $@-tmp
+	set -e; \
+	cp $< $@-tmp/; \
+	cd $@-tmp; \
+	$(SUBXALAN) \
+		-in $< \
+		-xsl ../$(XSLT_EPUB) \
+		-param html.stylesheet $(notdir $(CSS_EPUB_HTML)); \
+	rm -f $<; \
+	cd ..
+	cp $(CSS_EPUB_HTML) $@-tmp/OEBPS/
+	mkdir $@-tmp/OEBPS/images
+#	cp $(CSS_HTML_IMGS) $@-tmp/OEBPS/images/
+	if [ -f "$(EPUB_ICON)" ]; then \
+		cp $(EPUB_ICON) $@-tmp/OEBPS/images/epub-logo.png; \
+	fi
+	if [ -n "$(BASE_TARGET_IMAGES)" ]; then \
+		cp $(BASE_TARGET_IMAGES) $@-tmp/OEBPS/images/; \
+	fi
+	cd $@-tmp/OEBPS && ../../$(UPDATE_IMAGE_SIZE) --fixhtml *.html
+	$(FINALIZE_EPUB) $@-tmp
+	echo "application/epub+zip" > $@-tmp/mimetype
+	mv $@-tmp $@
+
+%.epub: %.epubfiles
+	set -e; \
+	cd $<; \
+	zip -0Xq  ../$@-tmp.zip mimetype; \
+	zip -Xr9D ../$@-tmp.zip *; \
+	cd ..
+	mv $@-tmp.zip $@
+
+# Chunked HTML by Chapter (into directory)
+
+%.html-dir: %-ready.xml $(XSLT_HTMLC) $(XSLT_HTMLC_DEPEND) $(CSS_HTML)
+	-rm -rf $@-tmp $@
+	mkdir $@-tmp
+	$(XALAN) \
+		-in $< \
+		-out $@-tmp/$*.html \
+		-xsl $(XSLT_HTMLC) \
+		-param html.stylesheet $(notdir $(CSS_HTML)) 
+	cp $(CSS_HTML) $@-tmp
+	mkdir $@-tmp/images
+#	cp $(CSS_HTML_IMGS) $@-tmp/images/
+	if [ -n "$(BASE_TARGET_IMAGES)" ]; then \
+		cp $(BASE_TARGET_IMAGES) $@-tmp/images/; \
+	fi
+	cd $@-tmp && ../$(UPDATE_IMAGE_SIZE) --fixhtml *.html
+	mv $@-tmp $@
+
+%.html-section: %-ready.xml $(XSLT_HTMLS) $(XSLT_HTMLS_DEPEND) $(CSS_HTML) $(UPDATE_IMAGE_SIZE)
+	-rm -rf $@-tmp $@
+	mkdir $@-tmp
+	$(XALAN) \
+		-in $< \
+		-out $@-tmp/$*.html \
+		-xsl $(XSLT_HTMLS) \
+		-param html.stylesheet $(notdir $(CSS_HTML)) 
+	cp $(CSS_HTML) $@-tmp
+	mkdir $@-tmp/images
+#	cp $(CSS_HTML_IMGS) $@-tmp/images/
+	if [ -n "$(BASE_TARGET_IMAGES)" ]; then \
+		cp $(BASE_TARGET_IMAGES) $@-tmp/images/; \
+	fi
+	cd $@-tmp && ../$(UPDATE_IMAGE_SIZE) --fixhtml *.html
+	mv $@-tmp $@
+
+# FOP (precursor to PDF)
+
+%.fop: %-ready.xml $(XSLT_FO) $(XSLT_FO_DEPEND) $(XSLT_FO_TITLEPAGE)
+	$(XALAN) \
+		-in $< \
+		-out $@-tmp \
+		-xsl $(XSLT_FO)
+	mv $@-tmp $@
+
+# PDF
+
+%.pdf: %.fop $(FOP_CONFIG)
+	fop -d -c $(FOP_CONFIG) $< $@-tmp
+	mv $@-tmp $@
+
+# Manpages
+
+%.man: %-ready.xml
+	$(XALAN) \
+		-in $< \
+		-out $@-tmp \
+		-xsl $(XSLT_MAN) $<
+	mv $@-tmp $@
+
+clean::
+	rm -rf *.html *.tmp *.html-dir *.html-online *.html-section *.epubfiles *.epub *.pdf *.fop *-tmp

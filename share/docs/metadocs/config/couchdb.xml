@@ -1,0 +1,1038 @@
+<?xml version="1.0"?>
+<!DOCTYPE configoptions SYSTEM "couchdocs:config-options.dtd">
+<configoptions>
+
+  <configclasses>
+    <configclass id="query_server_config">
+
+      <description>
+        Query server options
+      </description>
+
+    </configclass>
+
+    <configclass id="couchdb">
+
+      <description>
+        CouchDB specific options
+      </description>
+
+    </configclass>
+
+    <configclass id="attachments">
+
+      <description>
+        Attachment options
+      </description>
+
+    </configclass>
+
+    <configclass id="uuids">
+
+      <description>
+        UUID generation options
+      </description>
+
+    </configclass>
+
+    <configclass id="daemons">
+
+      <description>
+        Daemons and background processes
+      </description>
+
+    </configclass>
+
+    <configclass id="stats">
+
+      <description>
+        Statistics options
+      </description>
+
+    </configclass>
+
+    <configclass id="httpd">
+
+      <description>
+        HTTPD Server options
+      </description>
+
+    </configclass>
+
+    <configclass id="query_servers">
+
+      <description>
+        Query Server options
+      </description>
+
+    </configclass>
+
+    <configclass id="couch_httpd_auth">
+
+      <description>
+        HTTPD Authentication options
+      </description>
+
+    </configclass>
+
+    <configclass id="httpd_db_handlers">
+
+      <description>
+        Database Operation handlers
+      </description>
+
+    </configclass>
+
+    <configclass id="replicator">
+
+      <description>
+        Replicator Options
+      </description>
+
+    </configclass>
+
+    <configclass id="log">
+
+      <description>
+        Logging options
+      </description>
+
+    </configclass>
+
+    <configclass id="ssl">
+
+      <description>
+        SSL (Secure Sockets Layer) Options
+      </description>
+
+    </configclass>
+
+    <configclass id="httpd_design_handlers">
+
+      <description>
+        Handlers for design document operations
+      </description>
+
+    </configclass>
+
+    <configclass id="httpd_global_handlers">
+
+      <description>
+        Handlers for global operations
+      </description>
+
+    </configclass>
+    <configclass id="compaction_daemon" iv="2.0">
+
+      <description>
+        Compaction deamon for processing automated compaction
+      </description>
+
+    </configclass>
+    <configclass id="compactions" iv="2.0">
+
+      <description>
+        Compaction rules for individual databases
+      </description>
+
+    </configclass>
+  </configclasses>
+
+  <configopts>
+
+    <configopt id="check_interval" class="compaction_daemon" iv="2.0">
+
+      <description>
+        The delay in seconds between each check to determine whether database and view indexes need to be compacted
+        </description>
+
+      <valuespec type="numeric">
+        <default>60</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="min_file_size" class="compaction_daemon" iv="2.0">
+
+      <description>
+        The minimum file size for the database and view groups. Compaction will only take place if the size of thefiles in each case is at least this value
+        </description>
+
+      <valuespec type="numeric">
+        <default>131072</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="database_name" class="compactions" iv="2.0">
+
+      <description>
+        An object that describes the individual parameters to be used to determined whether compaction should take place
+      </description>
+
+      <valuespec type="object">
+        <default>none</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="httpsd" class="daemons" iv="1.1.0">
+
+      <description>
+        Enabled HTTPS service
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd, start_link, [https]}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="cert_file" class="ssl" iv="1.1.0">
+
+      <description>
+        Certificate File
+      </description>
+
+      <valuespec type="string">
+        <default>/full/path/to/server_cert.pem</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="key_file" class="ssl" iv="1.1.0">
+
+      <description>
+        Private key file
+      </description>
+
+      <valuespec type="string">
+        <default>/full/path/to/server_key.pem</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="nodelay" class="httpd" iv="1.1.0">
+
+      <description>
+        Enable TCP_NODELAY
+      </description>
+
+      <valuespec type="boolean">
+        <default>false</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="reduce_limit" class="query_server_config">
+
+      <description>
+        reduce_limit
+      </description>
+
+      <valuespec type="boolean">
+        <default>true</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="os_process_timeout" class="couchdb">
+
+      <description>
+        os_process_timeout
+      </description>
+
+      <valuespec type="numeric">
+        <default>5000</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="max_attachment_chunk_size" class="couchdb">
+
+      <description>
+        max_attachment_chunk_size
+      </description>
+
+      <valuespec type="numeric">
+        <default>4294967296</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="max_document_size" class="couchdb">
+
+      <description>
+        max_document_size
+      </description>
+
+      <valuespec type="numeric">
+        <default>4294967296</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="uri_file" class="couchdb">
+
+      <description>
+        uri_file
+      </description>
+
+      <valuespec type="string">
+        <default>/var/lib/couchdb/couch.uri</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="max_dbs_open" class="couchdb">
+
+      <description>
+        max_dbs_open
+      </description>
+
+      <valuespec type="numeric">
+        <default>100</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="view_index_dir" class="couchdb">
+
+      <description>
+        view_index_dir
+      </description>
+
+      <valuespec type="string">
+        <default>/var/lib/couchdb</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="util_driver_dir" class="couchdb">
+
+      <description>
+        util_driver_dir
+      </description>
+
+      <valuespec type="string">
+        <default>/usr/lib64/couchdb/erlang/lib/couch-1.0.1/priv/lib</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="database_dir" class="couchdb">
+
+      <description>
+        database_dir
+      </description>
+
+      <valuespec type="string">
+        <default>/var/lib/couchdb</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="delayed_commits" class="couchdb">
+
+      <description>
+        delayed_commits
+      </description>
+
+      <valuespec type="boolean">
+        <default>true</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="compressible_types" class="attachments">
+
+      <description>
+        compressible_types
+      </description>
+
+      <valuespec type="string">
+        <default>text/*, application/javascript, application/json, application/xml</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="compression_level" class="attachments">
+
+      <description>
+        compression_level
+      </description>
+
+      <valuespec type="numeric">
+        <default>8</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="algorithm" class="uuids">
+
+      <description>
+        algorithm
+      </description>
+
+      <valuespec type="string">
+        <default>random</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="view_manager" class="daemons">
+
+      <description>
+        view_manager
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_view, start_link, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="auth_cache" class="daemons">
+
+      <description>
+        auth_cache
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_auth_cache, start_link, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="uuids" class="daemons">
+
+      <description>
+        uuids
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_uuids, start, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="stats_aggregator" class="daemons">
+
+      <description>
+        stats_aggregator
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_stats_aggregator, start, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="query_servers" class="daemons">
+
+      <description>
+        query_servers
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_query_servers, start_link, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="httpd" class="daemons">
+
+      <description>
+        httpd
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd, start_link, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="stats_collector" class="daemons">
+
+      <description>
+        stats_collector
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_stats_collector, start, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="db_update_notifier" class="daemons">
+
+      <description>
+        db_update_notifier
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_db_update_notifier_sup, start_link, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="external_manager" class="daemons">
+
+      <description>
+        external_manager
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_external_manager, start_link, []}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="samples" class="stats">
+
+      <description>
+        samples
+      </description>
+
+      <valuespec type="string">
+        <default>[0, 60, 300, 900]</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="rate" class="stats">
+
+      <description>
+        rate
+      </description>
+
+      <valuespec type="numeric">
+        <default>1000</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="vhost_global_handlers" class="httpd">
+
+      <description>
+        vhost_global_handlers
+      </description>
+
+      <valuespec type="string">
+        <default>_utils, _uuids, _session, _oauth, _users</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="secure_rewrites" class="httpd">
+
+      <description>
+        secure_rewrites
+      </description>
+
+      <valuespec type="boolean">
+        <default>true</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="authentication_handlers" class="httpd">
+
+      <description>
+        authentication_handlers
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_oauth, oauth_authentication_handler}, {couch_httpd_auth,
+          cookie_authentication_handler}, {couch_httpd_auth,
+          default_authentication_handler}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="port" class="httpd">
+
+      <description>
+        port
+      </description>
+
+      <valuespec type="numeric">
+        <default>5984</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="default_handler" class="httpd">
+
+      <description>
+        default_handler
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_db, handle_request}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="allow_jsonp" class="httpd">
+
+      <description>
+        allow_jsonp
+      </description>
+
+      <valuespec type="boolean">
+        <default>false</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="bind_address" class="httpd">
+
+      <description>
+        bind_address
+      </description>
+
+      <valuespec type="string">
+        <default>192.168.0.2</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="max_connections" class="httpd">
+
+      <description>
+        max_connections
+      </description>
+
+      <valuespec type="numeric">
+        <default>2048</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="javascript" class="query_servers">
+
+      <description>
+        javascript
+      </description>
+
+      <valuespec type="string">
+        <default>/usr/bin/couchjs /usr/share/couchdb/server/main.js</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="authentication_db" class="couch_httpd_auth">
+
+      <description>
+        authentication_db
+      </description>
+
+      <valuespec type="string">
+        <default>_users</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="require_valid_user" class="couch_httpd_auth">
+
+      <description>
+        require_valid_user
+      </description>
+
+      <valuespec type="boolean">
+        <default>false</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="authentication_redirect" class="couch_httpd_auth">
+
+      <description>
+        authentication_redirect
+      </description>
+
+      <valuespec type="string">
+        <default>/_utils/session.html</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="timeout" class="couch_httpd_auth">
+
+      <description>
+        timeout
+      </description>
+
+      <valuespec type="numeric">
+        <default>600</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="auth_cache_size" class="couch_httpd_auth">
+
+      <description>
+        auth_cache_size
+      </description>
+
+      <valuespec type="numeric">
+        <default>50</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_design" class="httpd_db_handlers">
+
+      <description>
+        _design
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_db, handle_design_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_compact" class="httpd_db_handlers">
+
+      <description>
+        _compact
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_db, handle_compact_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_view_cleanup" class="httpd_db_handlers">
+
+      <description>
+        _view_cleanup
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_db, handle_view_cleanup_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_temp_view" class="httpd_db_handlers">
+
+      <description>
+        _temp_view
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_view, handle_temp_view_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_changes" class="httpd_db_handlers">
+
+      <description>
+        _changes
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_db, handle_changes_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="max_http_sessions" class="replicator">
+
+      <description>
+        max_http_sessions
+      </description>
+
+      <valuespec type="numeric">
+        <default>10</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="max_http_pipeline_size" class="replicator">
+
+      <description>
+        max_http_pipeline_size
+      </description>
+
+      <valuespec type="numeric">
+        <default>10</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="include_sasl" class="log">
+
+      <description>
+        include_sasl
+      </description>
+
+      <valuespec type="boolean">
+        <default>true</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="level" class="log">
+
+      <description>
+        level
+      </description>
+
+      <valuespec type="string">
+        <default>info</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="file" class="log">
+
+      <description>
+        file
+      </description>
+
+      <valuespec type="string">
+        <default>/var/log/couchdb/couch.log</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_update" class="httpd_design_handlers">
+
+      <description>
+        _update
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_show, handle_doc_update_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_show" class="httpd_design_handlers">
+
+      <description>
+        _show
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_show, handle_doc_show_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_info" class="httpd_design_handlers">
+
+      <description>
+        _info
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_db, handle_design_info_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_list" class="httpd_design_handlers">
+
+      <description>
+        _list
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_show, handle_view_list_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_view" class="httpd_design_handlers">
+
+      <description>
+        _view
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_view, handle_view_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_rewrite" class="httpd_design_handlers">
+
+      <description>
+        _rewrite
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_rewrite, handle_rewrite_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_replicate" class="httpd_global_handlers">
+
+      <description>
+        _replicate
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_replicate_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="/" class="httpd_global_handlers">
+
+      <description>
+        /
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_welcome_req,
+          &lt;&lt;"Welcome"&gt;&gt;}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_config" class="httpd_global_handlers">
+
+      <description>
+        _config
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_config_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_utils" class="httpd_global_handlers">
+
+      <description>
+        _utils
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_utils_dir_req,
+          "/usr/share/couchdb/www"}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_active_tasks" class="httpd_global_handlers">
+
+      <description>
+        _active_tasks
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_task_status_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_session" class="httpd_global_handlers">
+
+      <description>
+        _session
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_auth, handle_session_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_log" class="httpd_global_handlers">
+
+      <description>
+        _log
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_log_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="favicon.ico" class="httpd_global_handlers">
+
+      <description>
+        favicon.ico
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_favicon_req,
+          "/usr/share/couchdb/www"}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_all_dbs" class="httpd_global_handlers">
+
+      <description>
+        _all_dbs
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_all_dbs_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_oauth" class="httpd_global_handlers">
+
+      <description>
+        _oauth
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_oauth, handle_oauth_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_restart" class="httpd_global_handlers">
+
+      <description>
+        _restart
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_restart_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_uuids" class="httpd_global_handlers">
+
+      <description>
+        _uuids
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_misc_handlers, handle_uuids_req}</default>
+      </valuespec>
+
+    </configopt>
+
+    <configopt id="_stats" class="httpd_global_handlers">
+
+      <description>
+        _stats
+      </description>
+
+      <valuespec type="object">
+        <default>{couch_httpd_stats_handlers, handle_stats_req}</default>
+      </valuespec>
+
+    </configopt>
+
+  </configopts>
+
+</configoptions>

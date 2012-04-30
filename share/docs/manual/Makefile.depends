@@ -1,0 +1,364 @@
+./couchdb-configuration.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		./metadoc-couchdb-config-options.xml \
+		Makefile
+
+./couchdb-configuration-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		./metadoc-couchdb-config-options.xml \
+		Makefile
+
+./couchdb-configuration-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		./metadoc-couchdb-config-options.xml \
+		Makefile
+
+./metadoc-couchdb-api-auth.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-auth-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-auth-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-config.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-config-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-config-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-db.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-db-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-db-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-dbdoc.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-dbdoc-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-dbdoc-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-design.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-design-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-design-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-json.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../metadocs//json/json.xml \
+		Makefile
+
+./metadoc-couchdb-api-json-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../metadocs//json/json.xml \
+		Makefile
+
+./metadoc-couchdb-api-json-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../metadocs//json/json.xml \
+		Makefile
+
+./metadoc-couchdb-api-localdb.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-localdb-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-localdb-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-misc.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-misc-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-api-misc-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-config-options.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-config-options-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		Makefile
+
+./metadoc-couchdb-config-options-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		Makefile
+
+couchdb-manual.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		./../common/docbuilddate.xml \
+		./couchdb-api-introduction.xml \
+		./couchdb-configuration.xml \
+		./couchdb-features.xml \
+		./couchdb-introduction.xml \
+		./couchdb-replication.xml \
+		./images/futon-createdb.png \
+		./images/futon-editdoc.png \
+		./images/futon-editeddoc.png \
+		./images/futon-overview.png \
+		./images/futon-replform.png \
+		./metadoc-couchdb-api-auth.xml \
+		./metadoc-couchdb-api-config.xml \
+		./metadoc-couchdb-api-db.xml \
+		./metadoc-couchdb-api-dbdoc.xml \
+		./metadoc-couchdb-api-design.xml \
+		./metadoc-couchdb-api-json.xml \
+		./metadoc-couchdb-api-localdb.xml \
+		./metadoc-couchdb-api-misc.xml \
+		./metadoc-couchdb-config-options.xml \
+		Makefile
+
+couchdb-manual-ready.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		./../common/docbuilddate.xml \
+		./couchdb-api-introduction.xml \
+		./couchdb-configuration.xml \
+		./couchdb-features.xml \
+		./couchdb-introduction.xml \
+		./couchdb-replication.xml \
+		./images/futon-createdb.png \
+		./images/futon-editdoc.png \
+		./images/futon-editeddoc.png \
+		./images/futon-overview.png \
+		./images/futon-replform.png \
+		./metadoc-couchdb-api-auth.xml \
+		./metadoc-couchdb-api-config.xml \
+		./metadoc-couchdb-api-db.xml \
+		./metadoc-couchdb-api-dbdoc.xml \
+		./metadoc-couchdb-api-design.xml \
+		./metadoc-couchdb-api-json.xml \
+		./metadoc-couchdb-api-localdb.xml \
+		./metadoc-couchdb-api-misc.xml \
+		./metadoc-couchdb-config-options.xml \
+		Makefile
+
+couchdb-manual-ready-online.xml: ../DocKit/bin/CouchDocs.pm \
+		../DocKit/bin/CouchDocs/Config.pm \
+		../DocKit/bin/CouchDocs/Config/Parser.pm \
+		../DocKit/bin/CouchDocs/JSON.pm \
+		../DocKit/bin/CouchDocs/JSON/Parser.pm \
+		../DocKit/bin/CouchDocs/URLAPI.pm \
+		../DocKit/bin/CouchDocs/URLAPI/Parser.pm \
+		../metadocs//config/couchdb.xml \
+		../metadocs//json/json.xml \
+		../metadocs//urlapi/couchdb.xml \
+		./../common/docbuilddate.xml \
+		./couchdb-api-introduction.xml \
+		./couchdb-configuration.xml \
+		./couchdb-features.xml \
+		./couchdb-introduction.xml \
+		./couchdb-replication.xml \
+		./images/futon-createdb.png \
+		./images/futon-editdoc.png \
+		./images/futon-editeddoc.png \
+		./images/futon-overview.png \
+		./images/futon-replform.png \
+		./metadoc-couchdb-api-auth.xml \
+		./metadoc-couchdb-api-config.xml \
+		./metadoc-couchdb-api-db.xml \
+		./metadoc-couchdb-api-dbdoc.xml \
+		./metadoc-couchdb-api-design.xml \
+		./metadoc-couchdb-api-json.xml \
+		./metadoc-couchdb-api-localdb.xml \
+		./metadoc-couchdb-api-misc.xml \
+		./metadoc-couchdb-config-options.xml \
+		Makefile
+
+BASE_TARGET_IMAGES = ./images/futon-createdb.png \
+	./images/futon-editdoc.png \
+	./images/futon-editeddoc.png \
+	./images/futon-overview.png \
+	./images/futon-replform.png
+
+XML_SOURCES = ./../common/docbuilddate.xml \
+	./couchdb-api-auth-metasrc.xml \
+	./couchdb-api-config-metasrc.xml \
+	./couchdb-api-db-metasrc.xml \
+	./couchdb-api-dbdoc-metasrc.xml \
+	./couchdb-api-design-metasrc.xml \
+	./couchdb-api-introduction.xml \
+	./couchdb-api-json-metasrc.xml \
+	./couchdb-api-localdb-metasrc.xml \
+	./couchdb-api-misc-metasrc.xml \
+	./couchdb-config-options-metasrc.xml \
+	./couchdb-configuration.xml \
+	./couchdb-features.xml \
+	./couchdb-introduction.xml \
+	./couchdb-manual.xml \
+	./couchdb-replication.xml \
+	./metadoc-couchdb-api-auth.xml \
+	./metadoc-couchdb-api-config.xml \
+	./metadoc-couchdb-api-db.xml \
+	./metadoc-couchdb-api-dbdoc.xml \
+	./metadoc-couchdb-api-design.xml \
+	./metadoc-couchdb-api-json.xml \
+	./metadoc-couchdb-api-localdb.xml \
+	./metadoc-couchdb-api-misc.xml \
+	./metadoc-couchdb-config-options.xml
+
+XML_BASE_SOURCES = ./../common/docbuilddate \
+	./couchdb-api-auth-metasrc \
+	./couchdb-api-config-metasrc \
+	./couchdb-api-db-metasrc \
+	./couchdb-api-dbdoc-metasrc \
+	./couchdb-api-design-metasrc \
+	./couchdb-api-introduction \
+	./couchdb-api-json-metasrc \
+	./couchdb-api-localdb-metasrc \
+	./couchdb-api-misc-metasrc \
+	./couchdb-config-options-metasrc \
+	./couchdb-configuration \
+	./couchdb-features \
+	./couchdb-introduction \
+	./couchdb-manual \
+	./couchdb-replication
+

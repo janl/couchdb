@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!ENTITY % chars.entities SYSTEM "../common/chars.ent">
+%chars.entities;
