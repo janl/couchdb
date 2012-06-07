@@ -9,12 +9,12 @@ ABSHL_PATH             = $(shell cd $(COUCHDB_XSLD)/docbook-xsl/highlighting/ &&
 
 XSLTPROC               = XML_CATALOG_FILES="$(XML_CATALOG_FILES)" xsltproc --xinclude --novalid
 XMLLINT                = XML_CATALOG_FILES="$(XML_CATALOG_FILES)" xmllint
-XALAN_JAR              = $(COUCHDB_TOOLS)/xalan/xalan.jar:$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:xml-apis.jar:$(COUCHDB_TOOLS)/xalan/serializer.jar
-SUBXALAN_JAR           = ../$(COUCHDB_TOOLS)/xalan/xalan.jar:../$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:../$(COUCHDB_TOOLS)/xalan/xercesImpl.jar:xml-apis.jar:../$(COUCHDB_TOOLS)/xalan/serializer.jar
-XALAN_EXTENSIONS       = $(COUCHDB_XSLD)/docbook-xsl/extensions/xalan27.jar
-SUBXALAN_EXTENSIONS    = ../$(COUCHDB_XSLD)/docbook-xsl/extensions/xalan27.jar
-XSLTHL_JAR             = $(COUCHDB_TOOLS)/xalan/xslthl.jar
-SUBXSLTHL_JAR          = ../$(COUCHDB_TOOLS)/xalan/xslthl.jar
+XALAN_JAR              = $(COUCHDB_DOC_JAR_DIR)/xalan.jar:$(COUCHDB_DOC_JAR_DIR)/xercesImpl.jar:$(COUCHDB_DOC_JAR_DIR)/xercesImpl.jar:xml-apis.jar:$(COUCHDB_DOC_JAR_DIR)/serializer.jar
+SUBXALAN_JAR           = $(COUCHDB_DOC_JAR_DIR)/xalan.jar:$(COUCHDB_DOC_JAR_DIR)/xercesImpl.jar:$(COUCHDB_DOC_JAR_DIR)/xercesImpl.jar:xml-apis.jar:$(COUCHDB_DOC_JAR_DIR)/serializer.jar
+XALAN_EXTENSIONS       = $(COUCHDB_DOC_JAR_DIR)/xslthl.jar
+SUBXALAN_EXTENSIONS    = $(COUCHDB_DOC_JAR_DIR)/xslthl.jar
+XSLTHL_JAR             = $(COUCHDB_DOC_JAR_DIR)/xslthl.jar
+SUBXSLTHL_JAR          = $(COUCHDB_DOC_JAR_DIR)/xslthl.jar
 JAVA_CP                = $(XALAN_JAR):$(XALAN_EXTENSIONS):$(XSLTHL_JAR)
 SUBJAVA_CP             = $(SUBXALAN_JAR):$(SUBXALAN_EXTENSIONS):$(XSLTHL_JAR)
 XALAN                  = XML_CATALOG_FILES="$(XML_CATALOG_FILES)" java -cp $(JAVA_CP) -Dxslthl.config="file:///$(ABSHL_PATH)/xslthl-config.xml" org.apache.xalan.xslt.Process 
