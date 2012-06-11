@@ -8,21 +8,21 @@ guides.
 In order to build the documentation you need the following Perl
 modules installed:
 
-Carp
-File::Basename
-Getopt::Long
-IO::File
-Module::Load;
-Module::Util
-XML::Parser::PerlSAX
-Image::Info
-DateTime
+ - Carp
+ - File::Basename
+ - Getopt::Long
+ - IO::File
+ - Module::Load;
+ - Module::Util
+ - XML::Parser::PerlSAX
+ - Image::Info
+ - DateTime
 
 To use the publishing system, you need the following Perl modules:
 
-Archive::Zip
-Cwd
-File::Rsync
+ - Archive::Zip
+ - Cwd
+ - File::Rsync
 
 In short:
 
@@ -33,22 +33,30 @@ In short:
 To actually build the target formats and assemble the documentation,
 you also need:
 
-xsltproc (http://xmlsoft.org/XSLT/downloads.html)
-FOP 1.x (http://xmlgraphics.apache.org/fop/)
-Zip
-GNU make
+ - xsltproc (http://xmlsoft.org/XSLT/downloads.html)
+ - FOP 1.x (http://xmlgraphics.apache.org/fop/)
+ - Zip
+ - GNU make
+
+In homebrew:
+
+    $ brew install xsltproc fop
 
 ## Building
+
+Finally, you will need to download a set of .jars that are used to build the docs. You can grab them from http://people.apache.org/~jan/couchdb/couchdb-doc-jars.tgz
+
+Untar them into any directory, say `~/couchdb-doc-jars`
 
 You can build all of the available documentation (in the respective
 formats) from the top level of the repository using:
 
-    $ make everything
+    $ COUCHDB_DOC_JAR_DIR=~/couchdb-doc-jars make docs
 
 If you want to make a specific document (in all formats), change to
 the directory and make everything:
 
-    $ cd couchdb-manual/
+    $ cd manual/
     $ make everything
 
 To make a specific format for a specific document, change to the
