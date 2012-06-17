@@ -54,6 +54,7 @@
 ^libtool
 ^license.skip
 ^m4/*
+^share/docs/*
 ^share/Makefile
 ^share/Makefile.in
 ^share/server/json2.js
