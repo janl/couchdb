@@ -1,1 +1,13 @@
 /* CSS Customization */
+body {
+    font-family: 'HelveticaNeue-Light', Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+
+    margin: 1em auto 0 auto;
+    width: 42em;
+}
+
+p {
+    line-height: 2em;
+}
