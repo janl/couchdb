@@ -73,3 +73,19 @@ This product also includes the following third-party components:
  * CoffeeScript (http://coffeescript.org/)
 
   Copyright 2011, Jeremy Ashkenas
+
+ * CouchDB API Docs
+
+  Copyright 2012, Couchbase
+
+ * DocKit DocBook Documentation Build Tools
+
+  Copyright 2012, Couchbase
+
+ * DocBook XSL Stylesheets (http://www.docbook.org/sgml/4.5/)
+
+   Copyright 1992-2010 HaL Computer Systems, Inc.,
+   O'Reilly & Associates, Inc., ArborText, Inc., Fujitsu Software
+   Corporation, Norman Walsh, Sun Microsystems, Inc., and the
+   Organization for the Advancement of Structured Information
+   Standards (OASIS).
