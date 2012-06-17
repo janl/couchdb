@@ -2,7 +2,9 @@
 
 include $(COUCHDB_MAKED)/vars-couchdocs
 
-DEFAULT:
+DEFAULT: all
+
+all: docs
 
 depend:
 	@set -e; \
@@ -21,7 +23,7 @@ reformat:
            $(MAKE) --directory $$dir reformat; \
 	done
 
-clean::
+clean:
 	@set -e; \
 	for dir in $(SUBDIRS); \
 	do \
@@ -46,12 +48,16 @@ validate:
 	done
 
 docs:
+ifeq ($(COUCHDB_DOC_JAR_DIR),)
+	@echo "'COUCHDB_DOC_JAR_DIR' not set, skipping docs build"
+else
 	@set -e; \
 	for dir in $(SUBDIRS); \
 	do \
            echo Building docs in $$dir;\
            $(MAKE) --directory $$dir docs; \
 	done
+endif
 
 new-project:
 	set -e; \

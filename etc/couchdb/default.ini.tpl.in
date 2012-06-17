@@ -122,7 +122,7 @@ compaction_daemon={couch_compaction_daemon, start_link, []}
 favicon.ico = {couch_httpd_misc_handlers, handle_favicon_req, "%localdatadir%/www"}
 
 _utils = {couch_httpd_misc_handlers, handle_utils_dir_req, "%localdatadir%/www"}
-_docs = {couch_httpd_misc_handlers, handle_utils_dir_req, "%htmldir%/"}
+_docs = {couch_httpd_misc_handlers, handle_utils_dir_req, "%localdatadir%/docs"}
 _all_dbs = {couch_httpd_misc_handlers, handle_all_dbs_req}
 _active_tasks = {couch_httpd_misc_handlers, handle_task_status_req}
 _config = {couch_httpd_misc_handlers, handle_config_req}

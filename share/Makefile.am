@@ -48,8 +48,7 @@ nobase_localdata_SCRIPTS = \
     $(JS_FILE) \
     $(COFFEE_FILE)
 
-nobase_dist_localdata_DATA = \
-    www/config.html \
+WWW_FILES = www/config.html \
     www/couch_tests.html \
     www/custom_test.html \
     www/database.html \
@@ -215,3 +214,36 @@ nobase_dist_localdata_DATA = \
     www/style/layout.css \
     www/verify_install.html \
     www/_sidebar.html
+
+MANUAL_FILES = \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-auth.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-basics.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-config.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-db.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-dbdoc.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-design.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-json.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-localdb.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-api-misc.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-manual.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-single-configuration.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-single-features.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-single-introduction.html \
+    docs/manual/couchdb-manual.html-dir/couchdb-single-replication.html \
+    docs/manual/couchdb-manual.html-dir/html.css \
+    docs/manual/couchdb-manual.html-dir/images \
+    docs/manual/couchdb-manual.html-dir/images/futon-createdb.png \
+    docs/manual/couchdb-manual.html-dir/images/futon-editdoc.png \
+    docs/manual/couchdb-manual.html-dir/images/futon-editeddoc.png \
+    docs/manual/couchdb-manual.html-dir/images/futon-overview.png \
+    docs/manual/couchdb-manual.html-dir/images/futon-replform.png \
+    docs/manual/couchdb-manual.html-dir/index.html
+
+RELEASE_FILES = \
+    docs/release/couchdb-release.html-dir \
+    docs/release/couchdb-release.html-dir/couchdb-release.html \
+    docs/release/couchdb-release.html-dir/html.css \
+    docs/release/couchdb-release.html-dir/images \
+    docs/release/couchdb-release.html-dir/index.html
+
+nobase_dist_localdata_DATA = $(WWW_FILES) $(MANUAL_FILES) $(RELEASE_FILES)
