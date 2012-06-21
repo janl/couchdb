@@ -624,3 +624,11 @@ form#replicator p.actions { padding: 1px; clear: left; margin: 0;
 #loginSignup {
   font-size:200%;
 }
+
+/* Docs Iframe*/
+iframe#docs {
+  width: 100%;
+  height: 98%;
+  margin: 0;
+  border: 0;
+}
