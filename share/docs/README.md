@@ -40,7 +40,7 @@ you also need:
 
 In homebrew:
 
-    $ brew install xsltproc fop
+    $ brew install fop
 
 ## Building
 
