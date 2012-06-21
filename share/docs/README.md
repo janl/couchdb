@@ -66,18 +66,6 @@ couchbase-api document:
     $ cd couchdb-manual
     $ make couchbase-api.pdf
 
-## Publishing
-
-Publishing of the documentation creates and assembles the correct
-documentation and bundles ready for distribution/download.
-
-Then, from the top level of the main CouchDocs repo: 
-
-    $ make publish
-
-The process also creates an index file (index.html), and copies the
-configured documents into the directory specified in the Makefile
-(PUBLISH_DIR)
 
 ## License
 
