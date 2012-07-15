@@ -15,7 +15,7 @@
 -export([handle_welcome_req/2,handle_favicon_req/2,handle_utils_dir_req/2,
     handle_all_dbs_req/1,handle_restart_req/1,
     handle_uuids_req/1,handle_config_req/1,handle_log_req/1,
-    handle_task_status_req/1, handle_file_req/2]).
+    handle_task_status_req/1, handle_file_req/2,handle_db_events_req/1]).
 
 -export([increment_update_seq_req/2]).
 
@@ -288,3 +288,39 @@ handle_log_req(#httpd{method='POST'}=Req) ->
     end;
 handle_log_req(Req) ->
     send_method_not_allowed(Req, "GET,POST").
+
+
+%% Handle db events
+
+get_db_update_notifier() ->
+    Self = self(),
+    {ok, Notifier} = couch_db_update_notifier:start_link(fun(Event) ->
+        Self ! {db_updated, Event}
+    end),
+    Notifier.
+
+close_db_update_notifier(Notifier) ->
+    couch_db_update_notifier:stop(Notifier).
+
+update_loop(Resp) ->
+    receive
+    {db_updated, {Type, DbName}} ->
+        {ok, Resp1} = couch_httpd:send_chunk(Resp, [?JSON_ENCODE({[
+                {type, Type},
+                {db, DbName}
+            ]}) | "\n"]),
+        update_loop(Resp1)
+    end.
+
+handle_db_events_req(#httpd{method='GET'}=Req) ->
+    {ok, Resp} = couch_httpd:start_json_response(Req, 200, []),
+    Notifier = get_db_update_notifier(),
+    try
+        update_loop(Resp)
+    after
+        % Erlang should terminate the notifier process
+        % before we even get here.
+        close_db_update_notifier(Notifier)
+    end;
+handle_db_events_req(Req) ->
+    send_method_not_allowed(Req, "GET").
