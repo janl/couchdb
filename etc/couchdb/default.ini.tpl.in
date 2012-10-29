@@ -61,7 +61,7 @@ include_sasl = true
 [log_level_by_module]
 couch_httpd = error
 couch_db = debug
-couch_file = info
+couch_file = debug
 couch_compaction_daemon = debug
 
 [couch_httpd_auth]

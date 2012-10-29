@@ -90,7 +90,8 @@ init([]) ->
     end,
     ets:insert(?MODULE, {level, Level}),
     lists:foreach(fun({Module, ModuleLevel}) ->
-        ets:insert(?MODULE, {Module, ModuleLevel})
+        ModuleLevelInteger = level_integer(list_to_atom(ModuleLevel)),
+        ets:insert(?MODULE, {Module, ModuleLevelInteger})
     end, LevelByModule),
 
 
@@ -134,11 +135,12 @@ get_level_integer() ->
         ?LEVEL_ERROR
     end.
 
-get_level_integer(Module) ->
+get_level_integer(Module0) ->
+    Module = atom_to_list(Module0),
     try
-        R = ets:lookup_element(?MODULE, Module, 2),
-        io:format("R: ~p", [R])
-    catch error:badarg ->
+        [{_Module, Level}] = ets:lookup(?MODULE, Module),
+        Level
+    catch error:_ ->
         get_level_integer()
     end.
 
