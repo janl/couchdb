@@ -75,6 +75,7 @@ html_files = \
     html/_sources/index.txt \
     html/_sources/intro.txt \
     html/_sources/json-structure.txt \
+    html/_sources/query-servers.rst \
     html/_sources/os-daemons.txt \
     html/_sources/range.txt \
     html/_sources/release.txt \
@@ -121,6 +122,7 @@ html_files = \
     html/index.html \
     html/intro.html \
     html/json-structure.html \
+    html/query-servers.html \
     html/objects.inv \
     html/os-daemons.html \
     html/range.html \
@@ -159,6 +161,7 @@ src_files = \
     ../src/index.rst \
     ../src/intro.rst \
     ../src/json-structure.rst \
+    ../src/query-servers.rst \
     ../src/os-daemons.rst \
     ../query-servers.rst \
     ../src/range.rst \
