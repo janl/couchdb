@@ -173,7 +173,7 @@ dist_localdoc_DATA = \
 nobase_dist_localdoc_DATA = $(html_files)
 
 EXTRA_DIST = \
-    ../conf.py \
+    ../src/conf.py \
     ../demo.mk \
     ../make.bat \
     ../Makefile.am \

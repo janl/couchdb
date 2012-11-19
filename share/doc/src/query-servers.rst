@@ -198,6 +198,7 @@ modules and functions:
    For `list`-functions only!
 
    .. note::
+   
       Only at this point list functions may set response `HTTP code` and
       `headers`. Also, you need to run this function before :func:`send`,
       :func:`getRow` or `return` statement or query server will implicitly call

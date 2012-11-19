@@ -18,7 +18,7 @@ extensions = ["sphinx.ext.todo"]
 
 source_suffix = ".rst"
 
-master_doc = "src/index"
+master_doc = "index"
 
 nitpicky = True
 
