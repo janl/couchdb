@@ -98,34 +98,27 @@ We see ascii tables with some additional formatting, all looking like the
 final HTML. So far so easy. For now, let's just add to the bottom of this. We
 can worry about organising this better later.
 
-We start by adding a new headline:
-
-.. code-block:: plain
+We start by adding a new headline::
 
     Number Handling
     ===============
 
 Now we paste in the rest of the main email of the thread. It is mostly text,
-but it includes some code listings. Let's mark them up. We'll turn
-
-.. code-block:: plain
+but it includes some code listings. Let's mark them up. We'll turn::
 
     ejson:encode(ejson:decode(<<"1.1">>)).
     <<"1.1000000000000000888">>
 
-Into:
+Into::
 
-.. code-block:: plain
-    
     .. code-block:: erlang
         
       ejson:encode(ejson:decode(<<"1.1">>)).
       <<"1.1000000000000000888">>
 
-And we follow along with the other code samples. We don't know off-hand what
-the formatting for "shell" is, so we'll try that.. We turn
+And we follow along with the other code samples. We turn::
 
-.. code-block:: plain
+    Spidermonkey
 
     $ js -h 2>&1 | head -n 1
     JavaScript-C 1.8.5 2011-03-31
@@ -136,11 +129,9 @@ the formatting for "shell" is, so we'll try that.. We turn
     js> JSON.stringify(JSON.parse(f))
     "1.0123456789012346"
 
-into:
+into::
 
-.. code-block:: plain
-
-    .. code-block:: shell
+    Spidermonkey::
 
         $ js -h 2>&1 | head -n 1
         JavaScript-C 1.8.5 2011-03-31
@@ -159,17 +150,13 @@ entry as opposed to a post on a mailing list.
 The next step would be to validate that we got all the markup right. I'll
 leave this for later. For now we'll contribute our change back to CouchDB.
 
-First, we commit our changes:
-
-.. code-block:: shell
+First, we commit our changes::
 
     $ > git commit -am 'document number encoding'
     [master a84b2cf] document number encoding
     1 file changed, 199 insertions(+)
 
-Then we push the commit to our CouchDB fork:
-
-.. code-block:: shell
+Then we push the commit to our CouchDB fork::
 
     $ git push origin master
 
