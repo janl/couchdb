@@ -85,3 +85,7 @@ This product also includes the following third-party components:
  * Underscore.js 1.4.2 (http://underscorejs.org)
 
    Copyright 2012, Jeremy Ashkenas
+
+ * couch_dbupdates
+
+   Copyright 2012, Benoît Chesneau <benoitc@refuge.io>
