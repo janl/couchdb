@@ -267,9 +267,7 @@ handle_session_req(#httpd{method='POST', mochi_req=MochiReq}=Req) ->
     case authenticate(Password, User) of
         true ->
             % setup the session cookie
-            Secret = ?l2b(ensure_cookie_auth_secret()),
-            CurrentTime = make_cookie_time(),
-            Cookie = cookie_auth_cookie(Req, ?b2l(UserName), <<Secret/binary, UserSalt/binary>>, CurrentTime),
+            Cookie = make_cookie(Req, UserName, UserSalt),
             % TODO document the "next" feature in Futon
             {Code, Headers} = case couch_httpd:qs_value(Req, "next", nil) of
                 nil ->
@@ -296,7 +294,25 @@ handle_session_req(#httpd{method='POST', mochi_req=MochiReq}=Req) ->
     end;
 % get user info
 % GET /_session
-handle_session_req(#httpd{method='GET', user_ctx=UserCtx}=Req) ->
+handle_session_req(#httpd{method='GET'}=Req) ->
+    ForUser = ?l2b(couch_httpd:qs_value(Req, "for", nil)),
+    handle_session_req(Req, ForUser);
+% logout by deleting the session
+handle_session_req(#httpd{method='DELETE'}=Req) ->
+    Cookie = mochiweb_cookies:cookie("AuthSession", "", [{path, "/"}] ++ cookie_scheme(Req)),
+    {Code, Headers} = case couch_httpd:qs_value(Req, "next", nil) of
+        nil ->
+            {200, [Cookie]};
+        Redirect ->
+            {302, [Cookie, {"Location", couch_httpd:absolute_uri(Req, Redirect)}]}
+    end,
+    send_json(Req, Code, Headers, {[{ok, true}]});
+handle_session_req(Req) ->
+    send_method_not_allowed(Req, "GET,HEAD,POST,DELETE").
+
+% get user info
+% GET /_session
+handle_session_req(#httpd{method='GET', user_ctx=UserCtx}=Req, nil) ->
     Name = UserCtx#user_ctx.name,
     ForceLogin = couch_httpd:qs_value(Req, "basic", "false"),
     case {Name, ForceLogin} of
@@ -319,18 +335,27 @@ handle_session_req(#httpd{method='GET', user_ctx=UserCtx}=Req) ->
                     end)}}
             ]})
     end;
-% logout by deleting the session
-handle_session_req(#httpd{method='DELETE'}=Req) ->
-    Cookie = mochiweb_cookies:cookie("AuthSession", "", [{path, "/"}] ++ cookie_scheme(Req)),
-    {Code, Headers} = case couch_httpd:qs_value(Req, "next", nil) of
-        nil ->
-            {200, [Cookie]};
-        Redirect ->
-            {302, [Cookie, {"Location", couch_httpd:absolute_uri(Req, Redirect)}]}
-    end,
-    send_json(Req, Code, Headers, {[{ok, true}]});
-handle_session_req(Req) ->
-    send_method_not_allowed(Req, "GET,HEAD,POST,DELETE").
+% get session for another user, only admins can do this
+handle_session_req(#httpd{method='GET'}=Req, ForUser) ->
+    ok = couch_httpd:verify_is_server_admin(Req),
+
+    ?LOG_DEBUG("Admin requests auth token for: ~s", [ForUser]),
+    case couch_auth_cache:get_user_creds(ForUser) of
+    nil ->
+        couch_httpd:send_error(Req, 404, <<"not_found">>,
+            ?l2b("User '" ++ ?b2l(ForUser) ++ "' not found"));
+    User ->
+        UserSalt = couch_util:get_value(<<"salt">>, User, nil),
+        {_, Cookie} = make_cookie(Req, ForUser, UserSalt),
+        send_json(Req, 200, [], {[{ForUser, ?l2b(Cookie)}]})
+    end.
+
+
+make_cookie(Req, UserName, UserSalt) ->
+    Secret = ?l2b(ensure_cookie_auth_secret()),
+    CurrentTime = make_cookie_time(),
+    cookie_auth_cookie(Req, ?b2l(UserName), <<Secret/binary, UserSalt/binary>>, CurrentTime).
+
 
 maybe_value(_Key, undefined, _Fun) -> [];
 maybe_value(Key, Else, Fun) ->
