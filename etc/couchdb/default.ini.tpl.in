@@ -50,7 +50,6 @@ allow_jsonp = false
 ;server_options = [{backlog, 128}, {acceptor_pool_size, 16}]
 ; For more socket options, consult Erlang's module 'inet' man page.
 ;socket_options = [{recbuf, 262144}, {sndbuf, 262144}, {nodelay, true}]
-socket_options = [{recbuf, 32768}] ; COUCHDB-1986
 log_max_chunk_size = 1000000
 enable_cors = false
 ; CouchDB can optionally enforce a maximum uri length;
@@ -148,6 +147,7 @@ auth_cache={couch_auth_cache, start_link, []}
 replicator_manager={couch_replicator_manager, start_link, []}
 os_daemons={couch_os_daemons, start_link, []}
 compaction_daemon={couch_compaction_daemon, start_link, []}
+estatsd={estatsd_couch, start, []}
 
 [httpd_global_handlers]
 / = {couch_httpd_misc_handlers, handle_welcome_req, <<"Welcome">>}
@@ -224,6 +224,18 @@ utc_id_suffix =
 rate = 1000
 ; sample intervals are in seconds
 samples = [0, 60, 300, 900]
+
+[estatsd]
+; enable estatsd bridge to graphite
+enable_estatsd = true
+; milliseconds between flushes
+flush_interval = 10000
+; IP address for graphite host
+graphite_host = 127.0.0.1
+; udp/tcp port for graphite host
+graphite_port = 2003
+; enable BEAM metrics
+vm_metrics = true
 
 [attachments]
 compression_level = 8 ; from 1 (lowest, fastest) to 9 (highest, slowest), 0 to disable compression
@@ -353,4 +365,3 @@ min_file_size = 131072
 ;    compacted in parallel.
 ;
 ;_default = [{db_fragmentation, "70%"}, {view_fragmentation, "60%"}, {from, "23:00"}, {to, "04:00"}]
-

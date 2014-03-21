@@ -189,3 +189,7 @@ This product also includes the following third-party components:
  * src/fauxton/asserts/js/plugins/backbone.fetch-cache.js
 
    Copyright (c) 2012-2013 Andrew Appleton, http://floatleft.com
+
+ * src/estatsd
+ 
+   Copyright (c) 2011 Richard Jones

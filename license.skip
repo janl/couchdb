@@ -160,6 +160,7 @@
 ^src/my-first-couchdb-plugin/Makefile
 ^src/my-first-couchdb-plugin/Makefile.in
 ^src/snappy/.*
+^src/estatsd/.*
 ^stamp-h1
 ^test/Makefile
 ^test/Makefile.in
