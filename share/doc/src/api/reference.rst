@@ -23,6 +23,7 @@ Contents:
    database
    documents
    design
+   mango
    misc
    local
    dbmaint
