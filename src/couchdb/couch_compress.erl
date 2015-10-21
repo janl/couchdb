@@ -68,9 +68,9 @@ decompress(<<?SNAPPY_PREFIX, Rest/binary>>) ->
     {ok, TermBin} = snappy:decompress(Rest),
     binary_to_term(TermBin);
 decompress(<<?TERM_PREFIX, _/binary>> = Bin) ->
-    binary_to_term(Bin);
-decompress(Bin) ->
-    Bin.
+    binary_to_term(Bin).
+% decompress(Bin) ->
+%     Bin.
 
 
 is_compressed(<<?SNAPPY_PREFIX, _/binary>>, Method) ->
