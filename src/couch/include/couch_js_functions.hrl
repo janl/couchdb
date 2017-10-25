@@ -27,6 +27,10 @@
             throw({forbidden : 'doc.type must be user'});
         } // we only allow user docs for now
 
+        if (typeof newDoc.name !== 'string') {
+            throw({forbidden: 'doc.name must be a string'});
+        }
+
         if (!newDoc.name) {
             throw({forbidden: 'doc.name is required'});
         }
