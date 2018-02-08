@@ -23,6 +23,8 @@
 
 -include_lib("couch/include/couch_db.hrl").
 
+-define(DEFAULT_PARSING_TIMEOUT, 300000). % 5 minutes
+
 decode_multipart_stream(ContentType, DataFun, Ref) ->
     Parent = self(),
     NumMpWriters = num_mp_writers(),
@@ -69,11 +71,16 @@ mp_parse_doc({body, Bytes}, AccBytes) ->
         mp_parse_doc(Next, [Bytes | AccBytes])
     end;
 mp_parse_doc(body_end, AccBytes) ->
+    ParsingTimeout = get_parsing_timeout(),
     receive {get_doc_bytes, Ref, From} ->
-        From ! {doc_bytes, Ref, lists:reverse(AccBytes)}
-    end,
-    fun(Next) ->
-        mp_parse_atts(Next, {Ref, [], 0, orddict:new(), []})
+        From ! {doc_bytes, Ref, lists:reverse(AccBytes)},
+        fun(Next) ->
+            mp_parse_atts(Next, {Ref, [], 0, orddict:new(), []})
+        end
+    after ParsingTimeout ->
+        couch_log:error("Multipart parsing timeout of ~p reached in mp_parse_doc, exiting.",
+            [ParsingTimeout]),
+        exit({mp_parse_doc_timeout, ParsingTimeout})
     end.
 
 mp_parse_atts({headers, _}, Acc) ->
@@ -94,6 +101,7 @@ mp_parse_atts(eof, {Ref, Chunks, Offset, Counters, Waiting}) ->
     true ->
         ok;
     false ->
+        ParsingTimeout = get_parsing_timeout(),
         ParentRef = get(mp_parent_ref),
         receive
         abort_parsing ->
@@ -104,7 +112,9 @@ mp_parse_atts(eof, {Ref, Chunks, Offset, Counters, Waiting}) ->
             mp_parse_atts(eof, NewAcc);
         {'DOWN', ParentRef, _, _, _} ->
             exit(mp_reader_coordinator_died)
-        after 3600000 ->
+        after ParsingTimeout ->
+            couch_log:error("Multipart parsing timeout of ~p reached in mp_parse_atts, ignoring.",
+                [ParsingTimeout]),
             ok
         end
     end.
@@ -154,6 +164,7 @@ maybe_send_data({Ref, Chunks, Offset, Counters, Waiting}) ->
             % someone has written all possible chunks, keep moving
             {Ref, NewChunks, NewOffset, Counters, NewWaiting};
         true ->
+            ParsingTimeout = get_parsing_timeout(),
             ParentRef = get(mp_parent_ref),
             receive
             abort_parsing ->
@@ -163,6 +174,10 @@ maybe_send_data({Ref, Chunks, Offset, Counters, Waiting}) ->
             {get_bytes, Ref, X} ->
                 C2 = orddict:update_counter(X, 1, Counters),
                 maybe_send_data({Ref, NewChunks, NewOffset, C2, [X|NewWaiting]})
+            after ParsingTimeout ->
+                couch_log:error("Multipart parsing timeout of ~p reached in mp_parse_doc, exiting.",
+                    [ParsingTimeout]),
+                exit({mp_parse_doc_timeout, ParsingTimeout})
             end
         end
     end.
@@ -261,3 +276,6 @@ abort_multipart_stream(Parser) ->
         % like a validate_doc_update failure.
         throw(multi_part_abort_timeout)
     end.
+
+get_parsing_timeout() ->
+    config:get_integer("couchdb", "multipart_multipart_parsing_timeout", ?DEFAULT_PARSING_TIMEOUT).
