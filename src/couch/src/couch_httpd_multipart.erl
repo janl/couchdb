@@ -132,11 +132,11 @@ maybe_send_data({Ref, Chunks, Offset, Counters, Waiting}) ->
         end, Waiting),
 
         % check if we can drop a chunk from the head of the list
-        case Counters of
+        SmallestIndex = case Counters of
         [] ->
-            SmallestIndex = 0;
+            0;
         _ ->
-            SmallestIndex = lists:min(element(2, lists:unzip(Counters)))
+            lists:min([C || {_WPid, {_WRef, C}} <- Counters])
         end,
         Size = length(Counters),
         N = num_mp_writers(),
@@ -149,7 +149,7 @@ maybe_send_data({Ref, Chunks, Offset, Counters, Waiting}) ->
         end,
 
         % we should wait for a writer if no one has written the last chunk
-        LargestIndex = lists:max([0|element(2, lists:unzip(Counters))]),
+        LargestIndex = lists:max([0] ++ [C || {_WPid, {_WRef, C}} <- Counters]),
         if LargestIndex  >= (Offset + length(Chunks)) ->
             % someone has written all possible chunks, keep moving
             {Ref, NewChunks, NewOffset, Counters, NewWaiting};
